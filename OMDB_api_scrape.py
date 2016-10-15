@@ -1,0 +1,34 @@
+#!/usr/bin/python3
+# OMDB_api_scrape.py - parses a movie and year from the command line, grabs the
+#                      JSON and saves a copy for later
+
+import json, requests, sys, os
+
+URL_BASE = 'http://www.omdbapi.com/?'
+
+if len(sys.argv) > 1:
+	# Get address from command line.
+    mTitle = '+'.join(sys.argv[1:-1])
+    mYear = sys.argv[-1]
+    print(mTitle)
+    print(mYear)
+else:
+    print("Usage: OMDB_api_scrape.py <Movie Title> <Year>")
+    sys.exit(1)
+
+# Craft the URL
+url = URL_BASE + 't=' + mTitle + '&y=' + mYear + '&plot=full&r=json'
+
+# Try to get the url
+try:
+	response = requests.get(url)
+	response.raise_for_status()
+except requests.exceptions.RequestException as err:
+	print(err)
+	sys.exit(1)
+
+theJSON = json.loads(response.text)
+
+# Save the JSON file
+with open((os.path.join(os.getcwd(), (mTitle + '_' + mYear + '.json'))), 'w') as outfile:
+    json.dump(theJSON, outfile)
