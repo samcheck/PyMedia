@@ -2,17 +2,15 @@
 # OMDB_api_scrape.py - parses a movie and year from the command line, grabs the
 #                      xml and saves a copy for later
 
-import requests, sys, os
+import pprint, requests, sys, os
 import lxml.etree
 
 URL_BASE = 'http://www.omdbapi.com/?'
 
 if len(sys.argv) > 1:
 	# Get address from command line.
-    mTitle = '+'.join(sys.argv[1:-1])
+    mTitle = '+'.join(sys.argv[1:-1]) # need to correctly format the title str
     mYear = sys.argv[-1]
-    print(mTitle)
-    print(mYear)
 else:
     print("Usage: OMDB_api_scrape.py <Movie Title> <Year>")
     sys.exit(1)
@@ -28,6 +26,8 @@ except requests.exceptions.RequestException as err:
 	print(err)
 	sys.exit(1)
 
-# Save the XML file
-with open((os.path.join(os.getcwd(), (mTitle + '_' + mYear + '.xml'))), 'wb') as outfile:
+# TODO: correctly parse the xml instead of dumping it into a file
+
+# Save the XML file in current directory as Movie_Title_Year.xml from sys.argv
+with open((os.path.join(os.getcwd(), ('_'.join(sys.argv[1:]) + '.xml'))), 'w') as outfile:
     outfile.write(response.text)
