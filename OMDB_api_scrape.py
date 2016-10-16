@@ -4,6 +4,7 @@
 
 import pprint, requests, sys, os
 import lxml.etree
+from xml.dom.minidom import parseString
 
 URL_BASE = 'http://www.omdbapi.com/?'
 
@@ -26,8 +27,9 @@ except requests.exceptions.RequestException as err:
 	print(err)
 	sys.exit(1)
 
-# TODO: correctly parse the xml instead of dumping it into a file
+# make sure the xml is correctly parsed
+theXML = parseString(response.text)
 
 # Save the XML file in current directory as Movie_Title_Year.xml from sys.argv
 with open((os.path.join(os.getcwd(), ('_'.join(sys.argv[1:]) + '.xml'))), 'w') as outfile:
-    outfile.write(response.text)
+    outfile.write(theXML.toxml())
