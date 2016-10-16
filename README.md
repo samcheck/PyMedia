@@ -7,6 +7,7 @@ TODO:
 - Query/display the media information
 
 
+OVERALL:
 - a lot of validation and error/exception checking
 - automation options
 - refactoring
