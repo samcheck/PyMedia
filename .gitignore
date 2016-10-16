@@ -1,3 +1,8 @@
+# Ignore my stray data
+*.json
+*.xml
+
+# Standard python exclusions
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
