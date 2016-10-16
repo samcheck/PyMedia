@@ -1,23 +1,23 @@
 #!/usr/bin/python3
 # OMDB_api_scrape.py - parses a movie and year from the command line, grabs the
-#                      xml and saves a copy for later
+#                      JSON and saves a copy for later
 
-import pprint, requests, sys, os
-import lxml.etree
-from xml.dom.minidom import parseString
+import json, requests, sys, os
 
 URL_BASE = 'http://www.omdbapi.com/?'
 
 if len(sys.argv) > 1:
 	# Get address from command line.
-    mTitle = '+'.join(sys.argv[1:-1]) # need to correctly format the title str
+    mTitle = '+'.join(sys.argv[1:-1])
     mYear = sys.argv[-1]
+    print(mTitle)
+    print(mYear)
 else:
     print("Usage: OMDB_api_scrape.py <Movie Title> <Year>")
     sys.exit(1)
 
 # Craft the URL
-url = URL_BASE + 't=' + mTitle + '&y=' + mYear + '&plot=full&r=xml'
+url = URL_BASE + 't=' + mTitle + '&y=' + mYear + '&plot=full&r=json'
 
 # Try to get the url
 try:
@@ -27,9 +27,8 @@ except requests.exceptions.RequestException as err:
 	print(err)
 	sys.exit(1)
 
-# make sure the xml is correctly parsed
-theXML = parseString(response.text)
+theJSON = json.loads(response.text)
 
-# Save the XML file in current directory as Movie_Title_Year.xml from sys.argv
-with open((os.path.join(os.getcwd(), ('_'.join(sys.argv[1:]) + '.xml'))), 'w') as outfile:
-    outfile.write(theXML.toxml())
+# Save the JSON file
+with open((os.path.join(os.getcwd(), (mTitle + '_' + mYear + '.json'))), 'w') as outfile:
+    json.dump(theJSON, outfile)
