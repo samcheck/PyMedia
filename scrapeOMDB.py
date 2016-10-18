@@ -15,3 +15,14 @@ def OMDBmovie(mTitle, mYear):
 
     theJSON = json.loads(response.text)
     return(theJSON)
+
+def OMDBtv(tvTitle, tvSeason, tvEpisode):
+    # Craft the URL
+    url = URL_BASE + 't=' + str(tvTitle) + '&Season=' + str(tvSeason) '&Episode=' + str(tvEpisode) + '&plot=full&r=json'
+
+    # Try to get the url
+    response = requests.get(url)
+    response.raise_for_status()
+
+    theJSON = json.loads(response.text)
+    return(theJSON)
