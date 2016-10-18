@@ -18,7 +18,7 @@ def OMDBmovie(mTitle, mYear):
 
 def OMDBtv(tvTitle, tvSeason, tvEpisode):
     # Craft the URL
-    url = URL_BASE + 't=' + str(tvTitle) + '&Season=' + str(tvSeason) '&Episode=' + str(tvEpisode) + '&plot=full&r=json'
+    url = URL_BASE + 't=' + tvTitle + '&Season=' + str(tvSeason) + '&Episode=' + str(tvEpisode) + '&plot=full&r=json'
 
     # Try to get the url
     response = requests.get(url)
