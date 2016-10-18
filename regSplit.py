@@ -20,6 +20,7 @@ def Split(media_item):
     media_match = movie_regex.search(os.path.basename(media_item))
 
     if media_match:
+        # Clean up title and year
         title = media_match.group(1).replace('\\', '').strip()
         year = media_match.group(2).replace('\\', '').replace('(', '').replace(')', '').strip()
 
@@ -30,6 +31,7 @@ def Split(media_item):
     media_match = tv_regex.search(os.path.basename(media_item))
 
     if media_match:
+        # Clean title and split season and episode
         title = media_match.group(1).replace('\\', '').strip()
         season = media_match.group(2).upper().split('E')[0].replace('S','')
         episode = media_match.group(2).upper().split('E')[1]
