@@ -1,6 +1,7 @@
 # Ignore my stray data
 *.json
 *.xml
+*.csv
 
 # Standard python exclusions
 # Byte-compiled / optimized / DLL files
