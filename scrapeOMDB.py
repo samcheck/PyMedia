@@ -7,7 +7,7 @@ URL_BASE = 'http://www.omdbapi.com/?'
 
 def OMDBmovie(mTitle, mYear):
     # Craft the URL
-    url = URL_BASE + 't=' + mTitle + '&y=' + mYear + '&plot=full&r=json'
+    url = URL_BASE + 't=' + mTitle + '&y=' + str(mYear) + '&plot=full&r=json'
 
     # Try to get the url
     response = requests.get(url)
