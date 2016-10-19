@@ -7,12 +7,12 @@ TODO:
 - [ ] Build database: in progress, determining the best way to store the individual
  json returns that currently come from scrapeOMDB
     - Options:
-      - individual jsons; unweildly with large media db
+      - individual jsons; unwieldy with large media db
       - csv; can store keys/values with csv.DictWriter/Reader, not ideal
       - xml; switch to getting data in xml format from scrapeOMDB, build master xml file,
       may have same issues as jsons
       - some flavor of SQL; need to set up and build a SQL db...
-- [ ] Display the media information: some locally hosted frontend to display media
+- [ ] Display the media information: some locally hosted front-end to display media
 available in db
 
 
