@@ -1,9 +1,18 @@
 #!/usr/bin/python3
-# regSplit.py -
+# regSplit.py - Use regex to split up the media file and return a dict
 
 import re, os
 
 def Split(media_item):
+    '''Splits the media file's name into title and year if movie
+        and title, season and episode if TV.
+
+    Keyword argument:
+    media_item -- a media file (basename)
+
+    Returns: dictionary
+
+    '''
     # Test if the parameter is a valid file
     if not os.path.isfile(media_item):
         raise Exception('Not a file.')
