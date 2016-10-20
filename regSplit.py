@@ -1,18 +1,31 @@
 #!/usr/bin/python3
 # regSplit.py - Use regex to split up the media file and return a dict
 
-import re, os
+import re
+import os
+
 
 def Split(media_item):
-    '''Splits the media file's name into title and year if movie
-        and title, season and episode if TV.
+    """Splits the media file's name using regex.
 
-    Keyword argument:
-    media_item -- a media file (basename)
+    Splits a filename into title and year if movie and title,
+    season and episode if TV.
 
-    Returns: dictionary
+    Argument:
+    media_item: a media file (full path and basename).
 
-    '''
+    Returns:
+        A dictionary maping keys to extracted file info, each key maps to a
+        single string. For example:
+
+        {'type': 'movie',
+        'title': 'Finding Nemo',
+        'year': 2003}
+
+        Raises:
+            Exception: Not a file.
+            Exception: Item not formatted as a Movie or TV show.
+    """
     # Test if the parameter is a valid file
     if not os.path.isfile(media_item):
         raise Exception('Not a file.')
@@ -30,7 +43,7 @@ def Split(media_item):
 
     if media_match:
         # Clean up title and year
-        title = media_match.group(1).replace('\\', '').strip()
+        title = media_match.group(1).replace('\\', '').replace('.', ' ').strip().title()
         year = media_match.group(2).replace('\\', '').replace('(', '').replace(')', '').strip()
 
         # Return a dict w/ 'title', 'year' (movie), type ('tv' or 'movie')
@@ -41,7 +54,7 @@ def Split(media_item):
 
     if media_match:
         # Clean title and split season and episode
-        title = media_match.group(1).replace('\\', '').strip()
+        title = media_match.group(1).replace('\\', '').replace('.', ' ').strip().title()
         season = media_match.group(2).upper().split('E')[0].replace('S','')
         episode = media_match.group(2).upper().split('E')[1]
 
@@ -50,4 +63,4 @@ def Split(media_item):
 
     else:
         # If neither matches throw an exception that the file is not properly formatted
-        raise Exception('Item not formatted as a Movie or TV show')
+        raise Exception('Item not formatted as a Movie or TV show.')
