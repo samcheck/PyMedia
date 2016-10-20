@@ -4,10 +4,23 @@
 
 import os
 
-VIDEO_EXT = ('.webm', '.mkv', '.flv', '.avi', '.mov', '.qt', '.wmv', '.mp4', \
-            '.m4v', '.mpg', '.mpeg')
+VIDEO_EXT = ('.webm', '.mkv', '.flv', '.avi', '.mov', '.qt', '.wmv', '.mp4',
+             '.m4v', '.mpg', '.mpeg')
+
 
 def videoDir(pathToVideos):
+    """Searches directory and generates a list of matching filenames.
+
+    Argument:
+        pathToVideos: path to search for files matching the defined video
+            extensions.
+
+    Returns:
+        videoList: a list of matching filenames, including path.
+
+    Raises:
+        Exception: Not a valid directory, please input a directory to search.
+    """
     if not(os.path.exists(pathToVideos) and os.path.isdir(pathToVideos)):
         raise Exception('Not a valid directory, please input a directory to search.')
 
