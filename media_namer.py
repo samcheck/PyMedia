@@ -40,4 +40,5 @@ for item in tqdm.tqdm(media_list):
         else:
             files_no_response.append(item)
 
-print('Files without a response:', files_no_response)
+if files_no_response:
+    print('Files without a response:', files_no_response)
