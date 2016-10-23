@@ -3,6 +3,9 @@
 *.xml
 *.csv
 
+# Ignore my apikeys file
+apikeys.py
+
 # Standard python exclusions
 # Byte-compiled / optimized / DLL files
 __pycache__/
