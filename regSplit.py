@@ -8,8 +8,9 @@ import os
 def Split(media_item):
     """Splits the media file's name using regex.
 
-    Splits a filename into title and year if movie and title,
-    season and episode if TV.
+    Splits a filename into title and year if movie and title, season and episode
+    if TV. The function expects a format of 'Series Title' '(S|s)(##|#)(E|e)(##|#)'
+    or 'Movie Title' '(|[Year]|)'
 
     Argument:
     media_item: a media file (full path and basename).
@@ -31,12 +32,13 @@ def Split(media_item):
         raise Exception('Not a file.')
 
     # Make TV regex, 2 groups [all chars before Season/Ep] and [Season/Ep]
-    tv_regex = re.compile(r'(.*)([Ss]\d\d[Ee]\d\d)')
+    # Optionally 1 or 2 numbers for season/episode
+    tv_regex = re.compile(r'(.*)([Ss]\d?\d[Ee]\d?\d)')
 
     # Make movie regex, 2 groups [all chars before (year)] and [(year)]
     # seem to need to optionally match an additional backslash in the regex
     # based on being passed a string literal
-    movie_regex = re.compile(r'(.*)(\\?\(\d{4}\\?\))')
+    movie_regex = re.compile(r'(.*)(\\?(\(|\[)\d{4}\\?(\)|\]))')
 
     # First attempt to match and extract movie
     media_match = movie_regex.search(os.path.basename(media_item))
