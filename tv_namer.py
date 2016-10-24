@@ -12,9 +12,8 @@ import regSplit
 
 in_path = ' '.join(sys.argv[1:])
 
-media_list = videoLister.videoDir(in_path)
 files_not_renamed = []
-for item in tqdm.tqdm(media_list):
+for item in tqdm.tqdm(videoLister.videoDir(in_path)):
     reg_dict = regSplit.Split(item)
     ext = os.path.splitext(item)[1]
 
