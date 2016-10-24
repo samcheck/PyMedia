@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 # scrapeTVDB.py - pass a tv series, season and episode and returns JSON
+# does require an api key that can be obtained by signing up to thetvdb website
 # api documentation: https://api.thetvdb.com/swagger
 
 import requests
 from apikeys import TVDB_apikey
 URL_BASE = 'https://api.thetvdb.com'
+
 
 def theTVDB(tvTitle, tvSeason, tvEpisode):
     AUTH = {"apikey": TVDB_apikey}
