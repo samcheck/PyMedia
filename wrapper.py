@@ -12,9 +12,8 @@ import videoLister
 
 in_path = ' '.join(sys.argv[1:])
 
-media_list = videoLister.videoDir(in_path)
 files_no_response = []
-for item in tqdm.tqdm(media_list):
+for item in tqdm.tqdm(videoLister.videoDir(in_path)):
     reg_dict = regSplit.Split(item)
 
     if reg_dict['type'] == 'tv':
