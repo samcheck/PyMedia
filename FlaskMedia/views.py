@@ -1,6 +1,8 @@
+from flask import render_template
 from FlaskMedia import app
 
 @app.route('/')
 @app.route('/index')
 def index():
-	return "Flask media lives"
+	return render_template('index.html',
+							title='Home')
