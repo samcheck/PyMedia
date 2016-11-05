@@ -17,3 +17,11 @@ def index():
 	return render_template('index.html',
 							title='Home',
 							medialist=medialist)
+
+@app.route('/TV/<series_title>')
+def TV(series_title):
+    TV = TVshow.query.filter_by(series_title=series_title).first()
+    if not TV:
+        flash('TV series: %s not found in database.' % series_title)
+        return redirect(url_for('index'))
+    return render_template('TVshow.html', series_title=series_title)
