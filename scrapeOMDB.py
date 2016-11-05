@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 # scrapeOMDB.py - parses a movie and year from arguments and returns JSON
 
-import json
 import requests
 
 URL_BASE = 'http://www.omdbapi.com/?'
@@ -24,8 +23,7 @@ def OMDBmovie(mTitle, mYear):
     response = requests.get(url)
     response.raise_for_status()
 
-    theJSON = json.loads(response.text)
-    return(theJSON)
+    return(response.json())
 
 
 def OMDBtv(tvTitle, tvSeason, tvEpisode):
@@ -47,5 +45,4 @@ def OMDBtv(tvTitle, tvSeason, tvEpisode):
     response = requests.get(url)
     response.raise_for_status()
 
-    theJSON = json.loads(response.text)
-    return(theJSON)
+    return(response.json())
