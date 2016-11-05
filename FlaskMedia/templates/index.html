@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 	<h1>Ahoy!! Thar be Media below</h1>
-	{% for media in medialist %}
-	<div><p><b>{{ media.title }} plot:</b><br />{{ media.plot }}</p></div>
+	{% for media in episodes %}
+	<div><p><b>{{ media.series.title }}:</b><br />{{ media.episode }}</p></div>
 	{% endfor %}
 {% endblock %}
