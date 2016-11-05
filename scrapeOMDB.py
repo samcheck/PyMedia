@@ -13,10 +13,10 @@ def OMDBmovie(mTitle, mYear):
         mYear: Year the movie was released
 
     Returns:
-        theJSON: a dictionary with key value pairs matching return from OMDB
+        a dictionary with key value pairs matching return from OMDB
 
     """
-    # Craft the URL
+    # Craft the URL (with full plot and json response)
     url = URL_BASE + 't=' + mTitle + '&y=' + str(mYear) + '&plot=full&r=json'
 
     # Try to get the url
@@ -35,10 +35,10 @@ def OMDBtv(tvTitle, tvSeason, tvEpisode):
         tvEpisode: Episode number of the TV show
 
     Returns:
-        theJSON: a dictionary with key value pairs matching return from OMDB
+        a dictionary with key value pairs matching return from OMDB
 
     """
-    # Craft the URL
+    # Craft the URL (with full plot and json response)
     url = URL_BASE + 't=' + tvTitle + '&Season=' + str(tvSeason) + '&Episode=' + str(tvEpisode) + '&plot=full&r=json'
 
     # Try to get the url
