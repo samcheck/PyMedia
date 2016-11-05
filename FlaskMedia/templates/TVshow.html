@@ -2,9 +2,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{ TVshow.series_title }}</h1>
+    <h1>{{ Series.title }}</h1>
     <hr>
+    {% for episode in episodes %}
     <p>
-        {{ TVshow.ep_title }} plot: <b>{{ TVshow.plot }}</b>
+        {{ episode.series.title }} plot: <b>{{ episode.title }}</b>
     </p>
+    {% endfor %}
 {% endblock %}
