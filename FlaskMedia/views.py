@@ -1,29 +1,33 @@
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, session, url_for, request
 from FlaskMedia import app, db
-from .models import TVshow
+from .models import Series, Episode
 
 @app.route('/')
 @app.route('/index')
 def index():
 	medialist = [
 	{
-		'title': 'The day the earth stood still',
-		'plot': 'centripedial motion stops'
+		'series': {'title': 'The day the earth stood still'},
+		'episode': 'centripedial motion stops'
 	},
 	{
-		'title': 'The Office (US)',
-		'plot': 'Michael Scott messes things up'
+		'series': {'title': 'The Office (US)'},
+		'episode': 'Michael Scott messes things up'
 	}
 	]
 	return render_template('index.html',
 							title='Home',
-							medialist=medialist)
+                            episodes=medialist)
 
 
 @app.route('/TV/<series_title>')
 def TV(series_title):
-    TV = TVshow.query.filter_by(series_title=series_title).first()
+    TV = Series.query.filter_by(title=series_title).first()
     if not TV:
         flash('TV series: %s not found in database.' % series_title)
         return redirect(url_for('index'))
-    return render_template('TVshow.html', TVshow=TV)
+    eps = [
+        {'series': TV, 'title': 'Episode one a new hope'},
+        {'series': TV, 'title': 'Episode two the empire strikes back'}
+        ]
+    return render_template('TVshow.html', Series=TV, episodes=eps)
