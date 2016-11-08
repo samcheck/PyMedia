@@ -19,4 +19,4 @@ class Episode(db.Model):
     series_id = db.Column(db.Integer, db.ForeignKey('series.id'))
 
     def __repr__(self):
-        return '<Episode %r>' % (self.title)
+        return '<S%sE%s - %r>' % (self.season, self.episode, self.title)
