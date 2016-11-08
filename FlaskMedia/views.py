@@ -21,11 +21,10 @@ def TV(series_title):
     return render_template('TVshow.html', Series=TV, episodes=eps)
 
 
-
 @app.route('/shutdown', methods=['GET', 'POST'])
 def shutdown():
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
+    shutdown_server = request.environ.get('werkzeug.server.shutdown')
+    if shutdown_server is None:
         raise RuntimeError('Not running with the Werkzeug Server')
-    func()
+    shutdown_server()
     return 'Server shutting down...'
