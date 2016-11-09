@@ -4,9 +4,26 @@
 {% block content %}
     <h1>{{ Series.title }}</h1>
     <hr>
-    {% for episode in episodes %}
-    <p>
-        {{ episode.series.title }} plot: <b>{{ episode.title }}</b>
-    </p>
-    {% endfor %}
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Series</th>
+                    <th>Season</th>
+                    <th>Episode</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for episode in episodes %}
+                <tr>
+                    <td>{{ episode.series.title }}</td>
+                    <td>{{ episode.season }}</td>
+                    <td>{{ episode.episode }}</td>
+                    <td>{{ episode.title }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
