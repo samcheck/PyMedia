@@ -18,7 +18,7 @@ def TV(series_title):
         flash('TV series: %s not found in database.' % series_title)
         return redirect(url_for('index'))
     eps = Episode.query.filter_by(series_id=TV.id).all()
-    return render_template('TVshow.html', Series=TV, episodes=eps)
+    return render_template('TVshow.html', title=series_title, episodes=eps)
 
 
 @app.route('/shutdown', methods=['GET', 'POST'])
