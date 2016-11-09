@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{ Series.title }}</h1>
+    <h1>{{ episodes[0].series.title }}</h1> <!-- select first ep to get series title -->
     <hr>
     <div class="row">
         <table class="table table-striped">
@@ -12,6 +12,7 @@
                     <th>Season</th>
                     <th>Episode</th>
                     <th>Title</th>
+                    <th>Plot</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +22,7 @@
                     <td>{{ episode.season }}</td>
                     <td>{{ episode.episode }}</td>
                     <td>{{ episode.title }}</td>
+                    <td>{{ episode.plot }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
