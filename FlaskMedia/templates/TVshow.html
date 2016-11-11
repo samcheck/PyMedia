@@ -21,7 +21,7 @@
                     <td>{{ episode.series.title }}</td>
                     <td>{{ episode.season }}</td>
                     <td>{{ episode.episode }}</td>
-                    <td>{{ episode.title }}</td>
+                    <td><a href="{{ url_for('EP', series_title=episode.series.title, season=episode.season, episode=episode.episode) }}">{{ episode.title }}</a></td>
                     <td>{{ episode.plot }}</td>
                 </tr>
                 {% endfor %}
