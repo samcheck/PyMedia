@@ -1,0 +1,29 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ episode.series.title }}</h1> <!-- ep to get series title -->
+    <hr>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Series</th>
+                    <th>Season</th>
+                    <th>Episode</th>
+                    <th>Title</th>
+                    <th>Plot</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ episode.series.title }}</td>
+                    <td>{{ episode.season }}</td>
+                    <td>{{ episode.episode }}</td>
+                    <td><a href="{{ url_for('EP', series_title=episode.series.title, season=episode.season, episode=episode.episode) }}">{{ episode.title }}</a></td>
+                    <td>{{ episode.plot }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
