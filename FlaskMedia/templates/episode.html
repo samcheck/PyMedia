@@ -13,6 +13,8 @@
                     <th>Episode</th>
                     <th>Title</th>
                     <th>Plot</th>
+                    <th>First Aired</th>
+                    <th>Last Updated</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,6 +24,8 @@
                     <td>{{ episode.episode }}</td>
                     <td><a href="{{ url_for('EP', series_title=episode.series.title, season=episode.season, episode=episode.episode) }}">{{ episode.title }}</a></td>
                     <td>{{ episode.plot }}</td>
+                    <td>{{ episode.first_aired }}</td>
+                    <td>{{ episode.last_updated_utc }}</td>
                 </tr>
             </tbody>
         </table>
