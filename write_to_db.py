@@ -4,6 +4,8 @@ import sys
 import logging
 import datetime
 
+from tqdm import tqdm
+
 import videoLister
 import scrapeTVDB
 import regSplit
@@ -23,7 +25,7 @@ def write_ep(season, ep, title, plot, first_aired, last_updated_utc, TVDB_id, se
     # attempted to use try/except to catch errors but did not work on SQL errors
     if not Episode.query.filter_by(season=season, episode=episode, series_id=series_id).first():
         db.session.add(new_ep)
-        logger.info("Wrote Episode: S%sE%s - %s" % (season, episode, title))
+        logger.info("Wrote Episode: %s" % new_ep)
         db.session.commit()
     else:
         logger.warning("Episode %s already in database." % new_ep)
@@ -43,11 +45,10 @@ def write_series(title):
 in_path = ' '.join(sys.argv[1:])
 
 JWT = scrapeTVDB.auth()
-for item in videoLister.videoDir(in_path):
+for item in tqdm(videoLister.videoDir(in_path)):
     reg_dict = regSplit.Split(item)
     path = os.path.abspath(item)
     logger.info("Working on: %s" % path)
-
 
     if reg_dict['type'] == 'tv':
         med_info = scrapeTVDB.theTVDB(reg_dict['title'], reg_dict['season'],
