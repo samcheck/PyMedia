@@ -56,7 +56,7 @@ def Split(media_item):
 
     if media_match:
         # Clean title and split season and episode
-        title = media_match.group(1).replace('\\', '').replace('.', ' ').strip().title()
+        title = media_match.group(1).replace('\\', '').replace('.', ' ').replace('-', ' ').strip().title()
         season = media_match.group(2).upper().split('E')[0].replace('S','')
         episode = media_match.group(2).upper().split('E')[1]
 
