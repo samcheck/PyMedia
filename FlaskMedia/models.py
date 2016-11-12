@@ -16,6 +16,9 @@ class Episode(db.Model):
     episode = db.Column(db.Integer, index=True)
     title = db.Column(db.String(256), index=True)
     plot = db.Column(db.String(2048), index=True)
+    first_aired = db.Column(db.DateTime)
+    last_updated_utc = db.Column(db.DateTime)
+    TVDB_id = db.Column(db.Integer, index=True)
     series_id = db.Column(db.Integer, db.ForeignKey('series.id'))
 
     def __repr__(self):
