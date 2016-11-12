@@ -34,4 +34,4 @@ for item in videoLister.videoDir(in_path):
         shutil.move(item, (os.path.join(os.path.dirname(item), new_name)))
 
     else:
-        logger.info("File not renamed: ", item)
+        logger.warning("File not renamed: ", item)
