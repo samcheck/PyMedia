@@ -22,7 +22,8 @@ def TV(series_title):
 
 @app.route('/tv/<series_title>/S<season>/E<episode>')
 def EP(series_title, season, episode):
-    ep = Episode.query.filter_by(season=season, episode=episode).first()
+    TV = Series.query.filter_by(title=series_title).first()
+    ep = Episode.query.filter_by(season=season, episode=episode, series_id=TV.id).first()
     if not ep:
         flash('Episode for: %s S%sE%s not found in database.' % (series_title, season, episode))
         return redirect(url_for('index'))
