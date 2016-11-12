@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, session, url_for, request
+from flask import render_template, flash, redirect, session, url_for, request, send_from_directory
 from FlaskMedia import app, db
 from .models import Series, Episode
 
@@ -36,3 +36,8 @@ def shutdown():
         raise RuntimeError('Not running with the Werkzeug Server')
     shutdown_server()
     return 'Server shutting down...'
+
+
+@app.route('/uploads/<path:filename>')
+def hosted(filename):
+    return send_from_directory('/mnt/Programs/imgs/', filename)
