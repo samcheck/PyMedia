@@ -13,7 +13,7 @@ URL_BASE = 'https://api.thetvdb.com'
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename='scrapeTVDB.log',level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-# logger.addHandler(logging.StreamHandler()) #uncomment to log to terminal as well
+logger.addHandler(logging.StreamHandler()) #uncomment to log to terminal as well
 
 
 def auth():
@@ -27,6 +27,7 @@ def auth():
     logger.info("Received JWT auth token.")
 
     return(auth_resp.json()['token'])
+
 
 def theTVDB(tvTitle, tvSeason, tvEpisode, JWT=None):
     if not JWT:
@@ -49,5 +50,20 @@ def theTVDB(tvTitle, tvSeason, tvEpisode, JWT=None):
     ep_resp = requests.get(ep_url, headers=headers)
     ep_resp.raise_for_status()
     logger.info("Found episode: %s." % ep_resp.json()['data'][0]['episodeName'])
+
+    return(ep_resp.json())
+
+
+def episode_id(TVDB_id, JWT=None):
+    if not JWT:
+        JWT = auth()
+    headers = {'content-type': 'application/json',
+               'Authorization': ('Bearer ' + JWT)}
+
+    ep_url = URL_BASE + '/episodes/' + str(TVDB_id)
+
+    ep_resp = requests.get(ep_url, headers=headers)
+    ep_resp.raise_for_status()
+    logger.info("Found episode: %s." % ep_resp.json()['data']['episodeName'])
 
     return(ep_resp.json())
