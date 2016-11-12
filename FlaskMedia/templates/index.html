@@ -3,7 +3,5 @@
 <div class="jumbotron">
 	<h1>FlaskMedia Browser</h1>
 </div>
-	{% for media in Series %}
-	<p><a href="{{ url_for('TV', series_title=media.title) }}">{{ media.title }}</a></p>
-	{% endfor %}
+	<p><a href="{{ url_for('TVseries') }}">TV shows</a></p>
 {% endblock %}
