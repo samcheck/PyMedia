@@ -37,15 +37,16 @@ def write_series(title):
 
 in_path = ' '.join(sys.argv[1:])
 
-files_not_added = []
+JWT = scrapeTVDB.auth()
 for item in videoLister.videoDir(in_path):
     reg_dict = regSplit.Split(item)
     path = os.path.abspath(item)
     logger.info("Working on: %s" % path)
 
+
     if reg_dict['type'] == 'tv':
         med_info = scrapeTVDB.theTVDB(reg_dict['title'], reg_dict['season'],
-                                reg_dict['episode'])
+                                reg_dict['episode'], JWT)
         series_title = reg_dict['title']
         # get data using tvdb scraper
         season = med_info['data'][0]['airedSeason']
@@ -71,7 +72,4 @@ for item in videoLister.videoDir(in_path):
             write_ep(season, episode, title, plot, series.id)
 
     else:
-        files_not_added.append(item)
-
-if files_not_added:
-    logger.info('Files not added:', files_not_added)
+        logger.warning('File not added: ', item)
