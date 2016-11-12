@@ -13,7 +13,7 @@ URL_BASE = 'https://api.thetvdb.com'
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename='scrapeTVDB.log',level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger.addHandler(logging.StreamHandler())
+# logger.addHandler(logging.StreamHandler()) #uncomment to log to terminal as well
 
 
 def auth():
