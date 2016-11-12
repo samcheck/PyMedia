@@ -6,8 +6,13 @@ from .models import Series, Episode
 @app.route('/index')
 @app.route('/home')
 def index():
+    return render_template('index.html', title='Home')
+
+
+@app.route('/tv')
+def TVseries():
     available_series = Series.query.all()
-    return render_template('index.html', title='Home', Series=available_series)
+    return render_template('TVseries.html', title='TV shows', Series=available_series)
 
 
 @app.route('/tv/<series_title>')
