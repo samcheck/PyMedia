@@ -19,7 +19,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ episode.series.title }}</td>
+                    <td><a href="{{ url_for('TV', series_title=episode.series.title) }}">{{ episode.series.title }}</a></td>
                     <td>{{ episode.season }}</td>
                     <td>{{ episode.episode }}</td>
                     <td><a href="{{ url_for('EP', series_title=episode.series.title, season=episode.season, episode=episode.episode) }}">{{ episode.title }}</a></td>
@@ -30,4 +30,6 @@
             </tbody>
         </table>
     </div>
+    <h3><a href="http://www.imdb.com/title/{{ episode.IMDB_id }}">imdb link</a></h3>
+    <h3>TVDB Rating: {{ episode.TVDB_rating }}</h3>
 {% endblock %}
