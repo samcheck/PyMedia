@@ -20,24 +20,24 @@ def write_ep(season, ep, title, plot, first_aired, last_updated_utc, TVDB_id, se
     new_ep=Episode(season=season, episode=ep, title=title, plot=plot,
                    first_aired=first_aired, last_updated_utc=last_updated_utc,
                    TVDB_id=TVDB_id, series_id=series_id)
-    try:
+    # attempted to use try/except to catch errors but did not work on SQL errors
+    if not Episode.query.filter_by(season=season, episode=episode, series_id=series_id).first():
         db.session.add(new_ep)
-        db.session.commit()
         logger.info("Wrote Episode: S%sE%s - %s" % (season, episode, title))
-    except Exception as e:
-        db.session.rollback()
-        raise("Error adding episode to database:", e)
+        db.session.commit()
+    else:
+        logger.warning("Episode %s already in database." % new_ep)
+
 
 def write_series(title):
     new_series=Series(title=title)
-    try:
+    # attempted to use try/except to catch errors but did not work on SQL errors
+    if not Series.query.filter_by(title=series_title).first():
         db.session.add(new_series)
-        db.session.commit()
         logger.info("Wrote Series: %s" % series_title)
-    except Exception as e:
-        db.session.rollback()
-        raise("Error adding season to database:", e)
-
+        db.session.commit()
+    else:
+        logger.warning("Series %s already in database." % new_series)
 
 
 in_path = ' '.join(sys.argv[1:])
