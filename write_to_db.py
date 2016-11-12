@@ -6,9 +6,9 @@ import logging
 import videoLister
 import scrapeTVDB
 import regSplit
+
 from FlaskMedia import db
-from FlaskMedia.models import Series
-from FlaskMedia.models import Episode
+from FlaskMedia.models import Series, Episode
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename='write_to_db.log',level=logging.DEBUG,
