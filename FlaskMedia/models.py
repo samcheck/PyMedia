@@ -20,6 +20,7 @@ class Episode(db.Model):
     last_updated_utc = db.Column(db.DateTime)
     TVDB_id = db.Column(db.Integer, index=True)
     series_id = db.Column(db.Integer, db.ForeignKey('series.id'))
+    __table_args__ = (db.UniqueConstraint('season', 'episode', 'series_id', name='_episode_uc'),)
 
     def __repr__(self):
         return '<S%sE%s - %r>' % (self.season, self.episode, self.title)
