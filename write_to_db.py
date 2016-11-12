@@ -25,6 +25,7 @@ def write_ep(season, ep, title, plot, first_aired, last_updated_utc, TVDB_id, se
         db.session.commit()
         logger.info("Wrote Episode: S%sE%s - %s" % (season, episode, title))
     except Exception as e:
+        db.session.rollback()
         raise("Error adding episode to database:", e)
 
 def write_series(title):
@@ -34,6 +35,7 @@ def write_series(title):
         db.session.commit()
         logger.info("Wrote Series: %s" % series_title)
     except Exception as e:
+        db.session.rollback()
         raise("Error adding season to database:", e)
 
 
