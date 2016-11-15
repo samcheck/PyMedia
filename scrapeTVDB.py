@@ -67,3 +67,18 @@ def episode_id(TVDB_id, JWT=None):
     logger.info("Found episode: %s." % ep_resp.json()['data']['episodeName'])
 
     return(ep_resp.json())
+
+
+def series_id(TVDB_id, JWT=None):
+    if not JWT:
+        JWT = auth()
+    headers = {'content-type': 'application/json',
+               'Authorization': ('Bearer ' + JWT)}
+
+    series_url = URL_BASE + '/series/' + str(TVDB_id)
+
+    series_resp = requests.get(series_url, headers=headers)
+    series_resp.raise_for_status()
+    logger.info("Found Series: %s." % series_resp.json()['data']['seriesName'])
+
+    return(series_resp.json())
