@@ -46,3 +46,23 @@ def OMDBtv(tvTitle, tvSeason, tvEpisode):
     response.raise_for_status()
 
     return(response.json())
+
+
+def OMDBid(IMDB_id):
+    """Gets media info from omdbapi.com
+
+    Arguments:
+        IMDB_id: IMDB id of media to match
+
+    Returns:
+        a dictionary with key value pairs matching return from OMDB
+
+    """
+    # Craft the URL (with full plot and json response)
+    url = URL_BASE + 'i=' + IMDB_id + '&plot=full&r=json'
+
+    # Try to get the url
+    response = requests.get(url)
+    response.raise_for_status()
+
+    return(response.json())
