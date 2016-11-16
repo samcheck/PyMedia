@@ -22,7 +22,7 @@
                     <td><a href="{{ url_for('TV', series_title=episode.series.title) }}">{{ episode.series.title }}</a></td>
                     <td>{{ episode.season }}</td>
                     <td>{{ episode.episode }}</td>
-                    <td><a href="{{ url_for('EP', series_title=episode.series.title, season=episode.season, episode=episode.episode) }}">{{ episode.title }}</a></td>
+                    <td>{{ episode.title }}</td>
                     <td>{{ episode.plot }}</td>
                     <td>{{ episode.first_aired }}</td>
                     <td>{{ episode.last_updated_utc }}</td>
