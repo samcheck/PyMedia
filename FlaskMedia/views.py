@@ -1,12 +1,27 @@
 from flask import render_template, flash, redirect, session, url_for, request, send_from_directory
 from FlaskMedia import app, db
-from .models import Series, Episode
+from .models import Series, Episode, Movie
 
 @app.route('/')
 @app.route('/index')
 @app.route('/home')
 def index():
     return render_template('index.html', title='Home')
+
+
+@app.route('/movie')
+def all_Movies():
+    available_movies = Movie.query.all()
+    return render_template('all_Movies.html', Movies=available_movies)
+
+
+@app.route('/movie/<title>(<year>)')
+def Movies(title, year):
+    movie = Movie.query.filter_by(title=title, year=year).first()
+    if not TV:
+        flash('Movie: %s (%s) not found in database.' % (title, year))
+        return redirect(url_for('index'))
+    return render_template('movie.html', movie=movie)
 
 
 @app.route('/tv')
