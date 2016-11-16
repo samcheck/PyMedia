@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 # tv_namer.py - Renames passed media files of TV shows
 
-import shutil
 import os
 import sys
 import logging
@@ -33,7 +32,7 @@ for item in videoLister.videoDir(in_path):
                         med_info['data'][0]['episodeName'] + ext)
 
         logger.info("Renaming: %s, as: %s" % (item, new_name))
-        shutil.move(item, (os.path.join(os.path.dirname(item), new_name)))
+        os.rename(item, (os.path.join(os.path.dirname(item), new_name)))
 
     else:
         logger.warning(("File not renamed: "+ os.path.abspath(item)))
