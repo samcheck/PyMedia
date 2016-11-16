@@ -30,7 +30,7 @@ class Episode(db.Model):
     __table_args__ = (db.UniqueConstraint('season', 'episode', 'series_id', name='_episode_uc'),)
 
     def __repr__(self):
-        return '<S%sE%s - %r>' % (self.season, self.episode, self.title)
+        return '<S%sE%s - %s>' % (self.season, self.episode, self.title)
 
 
 class Movie(db.Model):
@@ -50,6 +50,7 @@ class Movie(db.Model):
     awards = db.Column(db.String(255), index=True)
     language = db.Column(db.String(15), index=True)
     country = db.Column(db.String(31), index=True)
+    poster = db.Column(db.String(255), index=True)
 
     def __repr__(self):
-        return '<%s (%d)>' % (self.title, self.year)   
+        return '<%s (%d)>' % (self.title, self.year)
