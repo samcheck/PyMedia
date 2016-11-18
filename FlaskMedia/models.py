@@ -5,6 +5,15 @@ class Series(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(256), index=True)
     plot = db.Column(db.String(2048), index=True)
+    rated = db.Column(db.String(15), index=True)
+    IMDB_id = db.Column(db.String(15), index=True)
+    TVDB_rating = db.Column(db.Float, index=True)
+    TVDB_rating_count = db.Column(db.Integer, index=True)
+    TVDB_last_update = db.Column(db.DateTime)
+    first_aired = db.Column(db.DateTime)
+    last_updated_utc = db.Column(db.DateTime)
+    poster = db.Column(db.String(255), index=True)
+    network = db.Column(db.String(15), index=True)
     episodes = db.relationship('Episode', backref='series', lazy='dynamic')
 
     def __repr__(self):
