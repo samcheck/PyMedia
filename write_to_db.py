@@ -49,12 +49,18 @@ def write_ep_long(season, ep, title, plot, first_aired, last_updated_utc,
         logger.warning("Episode %s already in database." % new_ep)
 
 
-def write_series(title):
-    new_series=Series(title=title)
+def write_series(title, plot, rated, IMDB_id, TVDB_rating, TVDB_rating_count,
+                 TVDB_last_update, first_aired, last_updated_utc, poster,
+                 network):
+
+    new_series=Series(title=title, plot=plot, rated=rated, IMDB_id=IMDB_id,
+                      TVDB_rating=TVDB_rating, TVDB_rating_count=TVDB_rating_count,
+                      TVDB_last_update=TVDB_last_update, first_aired=first_aired,
+                      last_updated_utc=last_updated_utc, poster=poster, network=network)
     # attempted to use try/except to catch errors but did not work on SQL errors
-    if not Series.query.filter_by(title=series_title).first():
+    if not Series.query.filter_by(title=title).first():
         db.session.add(new_series)
-        logger.info("Wrote Series: %s" % series_title)
+        logger.info("Wrote Series: %s" % title)
         db.session.commit()
     else:
         logger.warning("Series %s already in database." % new_series)
@@ -97,7 +103,27 @@ for item in tqdm(videoLister.videoDir(in_path)):
                           TVDB_rating, TVDB_rating_count, TVDB_last_update,
                           series.id)
         else:
-            write_series(series_title)
+            series_search = scrapeTVDB.series_search(series_title, JWT)
+            series_info = scrapeTVDB.series_id(series_search['data'][0]['id'], JWT)
+
+            series_title = series_info['data']['seriesName']
+            series_plot = series_info['data']['overview']
+            series_rated = series_info['data']['rating']
+            series_IMDB_id = series_info['data']['imdbId']
+            series_TVDB_rating = series_info['data']['siteRating']
+            series_TVDB_rating_count = series_info['data']['siteRatingCount']
+            series_TVDB_last_update = datetime.datetime.fromtimestamp(series_info['data']['lastUpdated'])
+            series_first_aired = datetime.datetime.strptime(series_info['data']['firstAired'],'%Y-%m-%d')
+            series_last_updated_utc = datetime.datetime.utcnow()
+            series_poster = ('http://thetvdb.com/banners/' + series_info['data']['banner'])
+            series_network = series_info['data']['network']
+
+            write_series(series_title, series_plot, series_rated,
+                         series_IMDB_id, series_TVDB_rating,
+                         series_TVDB_rating_count, series_TVDB_last_update,
+                         series_first_aired, series_last_updated_utc,
+                         series_poster, series_network)
+
             series = Series.query.filter_by(title=series_title).first()
             write_ep_long(season, episode, title, plot, first_aired,
                           last_updated_utc, TVDB_id, IMDB_id, abs_num,
