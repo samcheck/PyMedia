@@ -69,6 +69,23 @@ def episode_id(TVDB_id, JWT=None):
     return(ep_resp.json())
 
 
+def series_search(TV_title, JWT=None):
+    if not JWT:
+        JWT = auth()
+    headers = {'content-type': 'application/json',
+               'Authorization': ('Bearer ' + JWT)}
+
+    logger.info("Searching for %s" % TV_title)
+    tv_url = URL_BASE + '/search/series?name=' + TV_title
+    tv_resp = requests.get(tv_url, headers=headers)
+    tv_resp.raise_for_status()
+
+    # this matches the first series title returned, w/o checking...
+    logger.info("Found %s." % tv_resp.json()['data'][0]['seriesName'])
+
+    return(tv_resp.json())
+
+
 def series_id(TVDB_id, JWT=None):
     if not JWT:
         JWT = auth()
