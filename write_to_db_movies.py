@@ -60,9 +60,18 @@ for item in tqdm(videoLister.videoDir(in_path)):
             rated = med_info['Rated']
             runtime = med_info['Runtime']
             IMDB_id = med_info['imdbID']
-            IMDB_rating = float(med_info['imdbRating'])
-            IMDB_rating_count = int(med_info['imdbVotes'])
-            metascore = int(med_info['Metascore'])
+            if med_info['imdbRating'].isdigit():
+                IMDB_rating = med_info['imdbRating'] # need to check if N/A before convert to float
+            else:
+                IMDB_rating = 0
+            if med_info['imdbRating'].isdigit():
+                IMDB_rating_count = med_info['imdbVotes'] #need to parse string remove , before convert to int
+            else:
+                IMDB_rating_count = 0
+            if med_info['Metascore'].isdigit():
+                metascore = med_info['Metascore'] # need to check if N/A before convert to int
+            else:
+                metascore = 0         
             awards = med_info['Awards']
             language = med_info['Language']
             country = med_info['Country']
