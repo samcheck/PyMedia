@@ -3,6 +3,11 @@
 
 import re
 import os
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='regSplit.log',level=logging.DEBUG,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 
 def Split(media_item):
@@ -23,13 +28,13 @@ def Split(media_item):
         'title': 'Finding Nemo',
         'year': 2003}
 
-        Raises:
-            Exception: Not a file.
-            Exception: Item not formatted as a Movie or TV show.
+        if item is not formatted as a Movie or TV show (based on regex) return:
+
+        {'type': None}
     """
-    # Test if the parameter is a valid file
+    # Test if the parameter is a valid file, log a warning
     if not os.path.isfile(media_item):
-        raise Exception('Not a file.')
+        logger.warning('Not a file: %s' % media_item)
 
     # Make TV regex, 2 groups [all chars before Season/Ep] and [Season/Ep]
     # Optionally 1 or 2 numbers for season/episode
@@ -44,9 +49,11 @@ def Split(media_item):
     media_match = movie_regex.search(os.path.basename(media_item))
 
     if media_match:
+        logger.info('Matched movie format')
         # Clean up title and year
         title = media_match.group(1).replace('\\', '').replace('.', ' ').strip().title()
         year = media_match.group(2).replace('\\', '').replace('(', '').replace(')', '').strip()
+        logger.info('Movie: %s (%s)' % (title, year))
 
         # Return a dict w/ 'title', 'year' (movie), type ('tv' or 'movie')
         return{'type': 'movie', 'title': title, 'year': year}
@@ -55,14 +62,18 @@ def Split(media_item):
     media_match = tv_regex.search(os.path.basename(media_item))
 
     if media_match:
+        logger.info('Matched TV format')
         # Clean title and split season and episode
         title = media_match.group(1).replace('\\', '').replace('.', ' ').replace('-', ' ').strip().title()
         season = media_match.group(2).upper().split('E')[0].replace('S','')
         episode = media_match.group(2).upper().split('E')[1]
+        logger.info('TV: %s S%sE%s' % (title, season, episode))
 
         # Return a dict w/ 'title', 'season' (TV), 'episode' (TV), type ('tv' or 'movie')
         return{'type': 'tv', 'title': title, 'season': season, 'episode': episode}
 
     else:
-        # If neither matches throw an exception that the file is not properly formatted
-        raise Exception('Item not formatted as a Movie or TV show.')
+        # If neither matches log a warning that the file is not properly
+        # formatted and return a type None
+        logger.warning('Item not formatted as a Movie or TV show.')
+        return{'type': None}
