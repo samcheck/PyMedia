@@ -1,6 +1,7 @@
 from flask import render_template, flash, redirect, session, url_for, request, send_from_directory
 from FlaskMedia import app, db
 from .models import Series, Episode, Movie
+from .forms import EditMovieForm
 
 @app.route('/')
 @app.route('/index')
@@ -18,10 +19,31 @@ def all_Movies():
 @app.route('/movie/<title>(<year>)')
 def Movies(title, year):
     movie = Movie.query.filter_by(title=title, year=year).first()
-    if not TV:
+    if not movie:
         flash('Movie: %s (%s) not found in database.' % (title, year))
         return redirect(url_for('index'))
     return render_template('movie.html', movie=movie)
+
+
+@app.route('/movie/<title>(<year>)/edit', methods=['GET', 'POST'])
+def edit_movie(title, year):
+    movie = Movie.query.filter_by(title=title, year=year).first()
+    if not movie:
+        flash('Movie: %s (%s) not found in database.' % (title, year))
+        return redirect(url_for('index'))
+
+    form = EditMovieForm()
+    if form.validate_on_submit():
+        movie.title = form.title.data
+        movie.plot = form.plot.data
+        db.session.add(movie)
+        db.session.commit()
+        flash('Changes to the movie have been saved.')
+        return redirect(url_for('Movies', title=movie.title, year=movie.year))
+    else:
+        form.title.data = movie.title
+        form.plot.data = movie.plot
+    return render_template('edit_movie.html', form=form)
 
 
 @app.route('/tv')
