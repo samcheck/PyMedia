@@ -1,0 +1,23 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Edit Movie Info</h1>
+    <form action="" method="post" name="edit">
+        {{form.hidden_tag()}}
+        <table>
+            <tr>
+                <td>Movie Title:</td>
+                <td>{{ form.title(size=24) }}</td>
+            </tr>
+            <tr>
+                <td>Movie Plot:</td>
+                <td>{{ form.plot(cols=32, rows=4) }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Save Changes"></td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}
