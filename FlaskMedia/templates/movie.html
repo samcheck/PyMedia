@@ -16,7 +16,10 @@
         <li>Released: {{ movie.released.date().strftime("%B %d, %Y") }}</li>
         <li>Last Updated: {{ movie.last_updated_utc.strftime("%I:%M %p %B %d, %Y") }}</li>
         <li>IMDB Rating: {{ movie.IMDB_rating }}</li>
-        <li><a href="http://www.imdb.com/title/{{ movie.IMDB_id }}" class="btn btn-default" role="button">IMDB Page</a></li>
+        <li>
+            <a href="http://www.imdb.com/title/{{ movie.IMDB_id }}" class="btn btn-default" role="button">IMDB Page</a> 
+            <a href="{{ url_for('edit_movie', title=movie.title, year=movie.year) }}" class="btn btn-default" role="button">Edit</a>
+        </li>
     </p>
   </div>
 </div>
