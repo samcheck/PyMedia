@@ -1,3 +1,5 @@
+import datetime
+
 from flask import render_template, flash, redirect, session, url_for, request, send_from_directory
 from FlaskMedia import app, db
 from .models import Series, Episode, Movie
@@ -21,7 +23,7 @@ def Movies(title, year):
     movie = Movie.query.filter_by(title=title, year=year).first()
     if not movie:
         flash('Movie: %s (%s) not found in database.' % (title, year))
-        return redirect(url_for('index'))
+        return redirect(url_for('all_Movies'))
     return render_template('movie.html', movie=movie)
 
 
@@ -30,20 +32,33 @@ def edit_movie(title, year):
     movie = Movie.query.filter_by(title=title, year=year).first()
     if not movie:
         flash('Movie: %s (%s) not found in database.' % (title, year))
-        return redirect(url_for('index'))
+        return redirect(url_for('all_Movies'))
 
     form = EditMovieForm()
     if form.validate_on_submit():
         movie.title = form.title.data
         movie.plot = form.plot.data
+        movie.last_updated_utc = datetime.datetime.utcnow()
         db.session.add(movie)
         db.session.commit()
-        flash('Changes to the movie have been saved.')
+        flash('Changes to %s (%s) have been saved.' % (title, year))
         return redirect(url_for('Movies', title=movie.title, year=movie.year))
     else:
         form.title.data = movie.title
         form.plot.data = movie.plot
-    return render_template('edit_movie.html', form=form)
+    return render_template('edit_movie.html', form=form, movie=movie)
+
+
+@app.route('/movie/<title>(<year>)/delete')
+def delete_movie(title, year):
+    movie = Movie.query.filter_by(title=title, year=year).first()
+    if not movie:
+        flash('Movie: %s (%s) not found in database.' % (title, year))
+        return redirect(url_for('all_Movies'))
+    db.session.delete(movie)
+    db.session.commit()
+    flash('Movie: %s (%s) has been deleted.' % (title, year))
+    return redirect(url_for('all_Movies'))
 
 
 @app.route('/tv')
@@ -59,7 +74,7 @@ def TV(series_title):
         flash('TV series: %s not found in database.' % series_title)
         return redirect(url_for('index'))
     eps = Episode.query.filter_by(series_id=TV.id).all()
-    return render_template('TVshow.html', title=series_title, episodes=eps)
+    return render_template('TVshow.html', title=series_title, series=TV, episodes=eps)
 
 
 @app.route('/tv/<series_title>/S<season>/E<episode>')
