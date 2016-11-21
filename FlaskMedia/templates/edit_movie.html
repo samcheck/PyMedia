@@ -8,15 +8,15 @@
         <table>
             <tr>
                 <td>Movie Title:</td>
-                <td>{{ form.title(size=24) }}</td>
+                <td>{{ form.title(size=32, class="form-control") }}</td>
             </tr>
             <tr>
                 <td>Movie Plot:</td>
-                <td>{{ form.plot(cols=32, rows=4) }}</td>
+                <td>{{ form.plot(rows=8, class="form-control") }}</td>
             </tr>
             <tr>
                 <td></td>
-                <td><input type="submit" value="Save Changes"></td>
+                <td><input class="btn btn-primary" type="submit" value="Save Changes">  <button type="button" class="btn btn-danger" href="{{ url_for('delete_movie', title=movie.title, year=movie.year) }}">Delete</button></td>
             </tr>
         </table>
     </form>
