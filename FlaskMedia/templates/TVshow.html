@@ -2,9 +2,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1><div class="text-center">{{ episodes[0].series.title }}</div></h1> <!-- select first ep to get series title -->
-    <hr>
-    <h2><img src="{{ episodes[0].series.poster }}"></h2>
+    <div class="media">
+      <div class="media-left">
+          <img class="media-object" src="{{ series.poster }}">
+      </div>
+      <div class="media-body">
+        <h2 class="media-heading">{{ series.title }}</h2>
+        <p>
+            <li>{{ series.plot }}</li>
+            <hr>
+            <li>Rated: {{ series.rated }}</li>
+            <li>Network: {{ series.network }}</li>
+            <li>First Aired: {{ series.first_aired.date().strftime("%B %d, %Y") }}</li>
+            <li>Last Updated: {{ series.last_updated_utc.strftime("%I:%M %p %B %d, %Y") }}</li>
+            <li>TVDB Rating: {{ series.TVDB_rating }}</li>
+            <li>
+                <a href="http://www.imdb.com/title/{{ series.IMDB_id }}" class="btn btn-info" role="button">IMDB Page</a>
+            </li>
+        </p>
+      </div>
+    </div>
     <div class="row">
         <table class="table table-striped">
             <thead>
