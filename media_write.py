@@ -54,7 +54,7 @@ def write_ep_long(season, ep, title, plot, first_aired, last_updated_utc,
                    TVDB_rating=TVDB_rating, TVDB_rating_count=TVDB_rating_count,
                    TVDB_last_update=TVDB_last_update, series_id=series_id)
     # attempted to use try/except to catch errors but did not work on SQL errors
-    if not Episode.query.filter_by(season=season, episode=episode, series_id=series_id).first():
+    if not Episode.query.filter_by(season=season, episode=ep, series_id=series_id).first():
         db.session.add(new_ep)
         logger.info("Wrote Episode: %s" % new_ep)
         db.session.commit()
