@@ -13,9 +13,9 @@ def index():
 
 
 @app.route('/movie')
-def all_Movies():
+def Movie_all():
     available_movies = Movie.query.all()
-    return render_template('all_Movies.html', Movies=available_movies)
+    return render_template('Movie_all.html', movies=available_movies)
 
 
 @app.route('/movie/<title>(<year>)')
@@ -23,7 +23,7 @@ def Movies(title, year):
     movie = Movie.query.filter_by(title=title, year=year).first()
     if not movie:
         flash('Movie: %s (%s) not found in database.' % (title, year))
-        return redirect(url_for('all_Movies'))
+        return redirect(url_for('Movie_all'))
     return render_template('movie.html', movie=movie)
 
 
@@ -32,7 +32,7 @@ def edit_movie(title, year):
     movie = Movie.query.filter_by(title=title, year=year).first()
     if not movie:
         flash('Movie: %s (%s) not found in database.' % (title, year))
-        return redirect(url_for('all_Movies'))
+        return redirect(url_for('Movie_all'))
 
     form = EditMovieForm()
     if form.validate_on_submit():
@@ -54,11 +54,11 @@ def delete_movie(title, year):
     movie = Movie.query.filter_by(title=title, year=year).first()
     if not movie:
         flash('Movie: %s (%s) not found in database.' % (title, year))
-        return redirect(url_for('all_Movies'))
+        return redirect(url_for('Movie_all'))
     db.session.delete(movie)
     db.session.commit()
     flash('Movie: %s (%s) has been deleted.' % (title, year))
-    return redirect(url_for('all_Movies'))
+    return redirect(url_for('Movie_all'))
 
 
 @app.route('/tv')
