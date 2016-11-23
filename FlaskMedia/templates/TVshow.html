@@ -14,7 +14,7 @@
             <li>Rated: {{ series.rated }}</li>
             <li>Network: {{ series.network }}</li>
             <li>First Aired: {{ series.first_aired.date().strftime("%B %d, %Y") }}</li>
-            <li>Last Updated: {{ series.last_updated_utc.strftime("%I:%M %p %B %d, %Y") }}</li>
+            <li>Last Updated: {{ momentjs(series.last_updated_utc).calendar() }}</li>
             <li>TVDB Rating: {{ series.TVDB_rating }}</li>
             <li>
                 <a href="http://www.imdb.com/title/{{ series.IMDB_id }}" class="btn btn-info" role="button">IMDB Page</a>

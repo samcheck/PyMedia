@@ -14,7 +14,7 @@
         <li>Rated: {{ movie.rated }}</li>
         <li>Awards: {{ movie.awards }}</li>
         <li>Released: {{ movie.released.date().strftime("%B %d, %Y") }}</li>
-        <li>Last Updated: {{ movie.last_updated_utc.strftime("%I:%M %p %B %d, %Y") }}</li>
+        <li>Last Updated: {{ momentjs(movie.last_updated_utc).calendar() }}</li>
         <li>IMDB Rating: {{ movie.IMDB_rating }}</li>
         <li>
             <a href="http://www.imdb.com/title/{{ movie.IMDB_id }}" class="btn btn-info" role="button">IMDB Page</a>
