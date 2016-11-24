@@ -11,7 +11,6 @@
     <p>
         <li>{{ movie.plot }}</li>
         <hr>
-        <li>Rated: {{ movie.rated }}</li>
         <li>Awards: {{ movie.awards }}</li>
         <li>Released: {{ movie.released.date().strftime("%B %d, %Y") }}</li>
         <li>Last Updated: {{ momentjs(movie.last_updated_utc).calendar() }}</li>
