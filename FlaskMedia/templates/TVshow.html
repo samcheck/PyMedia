@@ -11,7 +11,7 @@
         <p>
             <li>{{ series.plot }}</li>
             <hr>
-            <li>Rated: {{ series.rated }}</li>
+            <li>Rated: <img src="/static/img/ratings/{{ series.rated }}.svg" height="32"></li>
             <li>Network: {{ series.network }}</li>
             <li>First Aired: {{ series.first_aired.date().strftime("%B %d, %Y") }}</li>
             <li>Last Updated: {{ momentjs(series.last_updated_utc).calendar() }}</li>
