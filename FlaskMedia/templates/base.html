@@ -48,16 +48,16 @@
             </div>
         </nav>
         <div class="container-fluid" role="main">
-		{% with messages = get_flashed_messages() %}
-			{% if messages %}
-				<ul>
-				{% for message in messages %}
-					<li>{{ message }}</li>
-				{% endfor %}
-				</ul>
-			{% endif %}
-		{% endwith %}
-		{% block content %}
+					{% with messages = get_flashed_messages() %}
+						{% if messages %}
+						<div class="alert alert-info" role="alert">
+							{% for message in messages %}
+								{{ message }}
+							{% endfor %}
+						</div>
+						{% endif %}
+					{% endwith %}
+				{% block content %}
         {% endblock %}
         <hr>
         <footer>
