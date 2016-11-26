@@ -30,3 +30,19 @@
   height:auto;
   width:100%
 }
+
+/* http://stackoverflow.com/questions/10591422/bootstrap-carousel-image-doesnt-align-properly */
+.carousel-inner > .item > a > img {
+    margin: 0 auto;
+    height: 400px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.carousel {
+        background-color: gray;
+        position: relative;
+        padding: 10px;     /* Shows as a border around the carousel */
+    }
