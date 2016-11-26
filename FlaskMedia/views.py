@@ -22,7 +22,7 @@ def Movie_all():
 def Movies(title, year):
     movie = Movie.query.filter_by(title=title, year=year).first()
     if not movie:
-        flash('Movie: %s (%s) not found in database.' % (title, year), 'error')
+        flash('Movie: %s (%s) not found in database.' % (title, year), 'danger')
         return redirect(url_for('Movie_all'))
     return render_template('movie.html', movie=movie)
 
@@ -31,7 +31,7 @@ def Movies(title, year):
 def edit_movie(title, year):
     movie = Movie.query.filter_by(title=title, year=year).first()
     if not movie:
-        flash('Movie: %s (%s) not found in database.' % (title, year), 'error')
+        flash('Movie: %s (%s) not found in database.' % (title, year), 'danger')
         return redirect(url_for('Movie_all'))
 
     form = EditMovieForm()
@@ -41,7 +41,7 @@ def edit_movie(title, year):
         movie.last_updated_utc = datetime.datetime.utcnow()
         db.session.add(movie)
         db.session.commit()
-        flash('Changes to %s (%s) have been saved.' % (title, year))
+        flash('Changes to %s (%s) have been saved.' % (title, year), 'success')
         return redirect(url_for('Movies', title=movie.title, year=movie.year))
     else:
         form.title.data = movie.title
@@ -53,11 +53,11 @@ def edit_movie(title, year):
 def delete_movie(title, year):
     movie = Movie.query.filter_by(title=title, year=year).first()
     if not movie:
-        flash('Movie: %s (%s) not found in database.' % (title, year))
+        flash('Movie: %s (%s) not found in database.' % (title, year), 'danger')
         return redirect(url_for('Movie_all'))
     db.session.delete(movie)
     db.session.commit()
-    flash('Movie: %s (%s) has been deleted.' % (title, year))
+    flash('Movie: %s (%s) has been deleted.' % (title, year), 'success')
     return redirect(url_for('Movie_all'))
 
 
@@ -71,7 +71,7 @@ def TVseries():
 def TV(series_title):
     TV = Series.query.filter_by(title=series_title).first()
     if not TV:
-        flash('TV series: %s not found in database.' % series_title)
+        flash('TV series: %s not found in database.' % series_title, 'danger')
         return redirect(url_for('index'))
     eps = Episode.query.filter_by(series_id=TV.id).all()
     return render_template('TVshow.html', title=series_title, series=TV, episodes=eps)
@@ -82,7 +82,7 @@ def EP(series_title, season, episode):
     TV = Series.query.filter_by(title=series_title).first()
     ep = Episode.query.filter_by(season=season, episode=episode, series_id=TV.id).first()
     if not ep:
-        flash('Episode for: %s S%sE%s not found in database.' % (series_title, season, episode))
+        flash('Episode for: %s S%sE%s not found in database.' % (series_title, season, episode), 'danger')
         return redirect(url_for('index'))
     return render_template('episode.html', episode=ep)
 
