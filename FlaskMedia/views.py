@@ -22,7 +22,7 @@ def Movie_all():
 def Movies(title, year):
     movie = Movie.query.filter_by(title=title, year=year).first()
     if not movie:
-        flash('Movie: %s (%s) not found in database.' % (title, year))
+        flash('Movie: %s (%s) not found in database.' % (title, year), 'error')
         return redirect(url_for('Movie_all'))
     return render_template('movie.html', movie=movie)
 
@@ -31,7 +31,7 @@ def Movies(title, year):
 def edit_movie(title, year):
     movie = Movie.query.filter_by(title=title, year=year).first()
     if not movie:
-        flash('Movie: %s (%s) not found in database.' % (title, year))
+        flash('Movie: %s (%s) not found in database.' % (title, year), 'error')
         return redirect(url_for('Movie_all'))
 
     form = EditMovieForm()
