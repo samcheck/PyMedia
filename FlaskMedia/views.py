@@ -1,4 +1,5 @@
 import datetime
+import random
 
 from flask import render_template, flash, redirect, session, url_for, request, send_from_directory
 from FlaskMedia import app, db
@@ -9,7 +10,8 @@ from .forms import EditMovieForm
 @app.route('/index')
 @app.route('/home')
 def index():
-    return render_template('index.html', title='Home')
+    rand_query = Movie.query.order_by(Movie.last_updated_utc).limit(3)
+    return render_template('index.html', title='Home', carousel_items=rand_query)
 
 
 @app.route('/movie')
