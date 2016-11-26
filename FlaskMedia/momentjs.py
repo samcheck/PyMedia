@@ -1,3 +1,5 @@
+# wrapper fucntion for momentjs
+
 from jinja2 import Markup
 
 class momentjs(object):
