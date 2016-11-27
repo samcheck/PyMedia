@@ -2,34 +2,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{ episode.series.title }}</h1> <!-- ep to get series title -->
-    <hr>
-    <div class="row">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Series</th>
-                    <th>Season</th>
-                    <th>Episode</th>
-                    <th>Title</th>
-                    <th>Plot</th>
-                    <th>First Aired</th>
-                    <th>Last Updated</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><a href="{{ url_for('TV', series_title=episode.series.title) }}">{{ episode.series.title }}</a></td>
-                    <td>{{ episode.season }}</td>
-                    <td>{{ episode.episode }}</td>
-                    <td>{{ episode.title }}</td>
-                    <td>{{ episode.plot }}</td>
-                    <td>{{ episode.first_aired }}</td>
-                    <td>{{ episode.last_updated_utc }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <h3><a href="http://www.imdb.com/title/{{ episode.IMDB_id }}">imdb link</a></h3>
-    <h3>TVDB Rating: {{ episode.TVDB_rating }}</h3>
+<div class="media">
+  <div class="media-left">
+      <a href="{{ url_for('TV', series_title=episode.series.title) }}">
+          <img class="media-object" src="{{ episode.series.poster }}">
+      </a>
+  </div>
+  <div class="media-body">
+    <h2 class="media-heading">{{ episode.title }}</h2>
+    <p>
+        <li>{{ episode.plot }}</li>
+        <hr>
+        <li>Series: <a href="{{ url_for('TV', series_title=episode.series.title) }}">{{ episode.series.title }}</a></li>
+        <li>Season: {{ episode.season }}</li>
+        <li>Episode: {{ episode.episode }}</li>
+        <li>First Aired: {{ episode.first_aired.date().strftime("%B %d, %Y") }}</li>
+        <li>Last Updated: {{ momentjs(episode.last_updated_utc).calendar() }}</li>
+        <li>TVDB Rating: {{ episode.TVDB_rating }}</li>
+        <li>
+            <a href="http://www.imdb.com/title/{{ episode.IMDB_id }}" class="btn btn-info" role="button">IMDB Page</a>
+        </li>
+    </p>
+  </div>
+</div>
 {% endblock %}
