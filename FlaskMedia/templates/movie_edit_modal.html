@@ -1,0 +1,37 @@
+<!-- movie edit button -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#movie_edit">
+    Edit Movie
+</button>
+
+<!-- movie edit modal -->
+<div class="modal fade" id="movie_edit" tabindex="-1" role="dialog" aria-labelledby="Edit Movie">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+                <h4 class="modal-title" id="Edit Movie">Edit Movie</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" name="edit">
+                    {{form.hidden_tag()}}
+                    <table>
+                        <tr>
+                            <td>Movie Title:</td>
+                            <td>{{ form.title(size=32, class="form-control") }}</td>
+                        </tr>
+                        <tr>
+                            <td>Movie Plot:</td>
+                            <td>{{ form.plot(rows=12, class="form-control") }}</td>
+                        </tr>
+                    </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <input class="btn btn-primary" type="submit" value="Save Changes">
+            </div>
+                </form>
+        </div>
+    </div>
+</div>
