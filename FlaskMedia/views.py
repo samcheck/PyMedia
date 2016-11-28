@@ -1,16 +1,16 @@
 import datetime
-import random
 
 from flask import render_template, flash, redirect, session, url_for, request, send_from_directory
 from FlaskMedia import app, db
 from .models import Series, Episode, Movie
 from .forms import EditMovieForm
+from sqlalchemy.sql import func
 
 @app.route('/')
 @app.route('/index')
 @app.route('/home')
 def index():
-    rand_query = Movie.query.order_by(Movie.last_updated_utc).limit(3)
+    rand_query = Movie.query.order_by(func.random()).limit(3)
     return render_template('index.html', title='Home', carousel_items=rand_query)
 
 
