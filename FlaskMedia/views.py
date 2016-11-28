@@ -20,13 +20,26 @@ def Movie_all():
     return render_template('Movie_all.html', movies=available_movies)
 
 
-@app.route('/movie/<title>(<year>)')
+@app.route('/movie/<title>(<year>)', methods=['GET', 'POST'])
 def Movies(title, year):
     movie = Movie.query.filter_by(title=title, year=year).first()
     if not movie:
         flash('Movie: %s (%s) not found in database.' % (title, year), 'danger')
         return redirect(url_for('Movie_all'))
-    return render_template('movie.html', movie=movie)
+
+    form = EditMovieForm()
+    if form.validate_on_submit():
+        movie.title = form.title.data
+        movie.plot = form.plot.data
+        movie.last_updated_utc = datetime.datetime.utcnow()
+        db.session.add(movie)
+        db.session.commit()
+        flash('Changes to %s (%s) have been saved.' % (title, year), 'success')
+        return redirect(url_for('Movies', title=movie.title, year=movie.year))
+    else:
+        form.title.data = movie.title
+        form.plot.data = movie.plot
+    return render_template('movie.html', form=form, movie=movie)
 
 
 @app.route('/movie/<title>(<year>)/edit', methods=['GET', 'POST'])
