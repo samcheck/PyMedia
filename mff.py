@@ -16,18 +16,65 @@ def ffprobe_json(media_file):
     return j_out, rc
 
 
-def main():
-    in_path = ' '.join(sys.argv[1:])
-    if os.path.isfile(in_path):
-        jffop, rc = ffprobe_json(in_path)
+def ff_conv_container(media_file):
+    new_name = os.path.splitext(media_file)[0]
+    #-movflags +faststart (to play partial files where end is not finished)
+    ff = 'ffmpeg -i "{}" -vcodec copy -acodec copy "{}".mp4'.format(media_file, new_name)
+    process = subprocess.Popen(shlex.split(ff), stdout=subprocess.PIPE)
+    stdout = process.communicate()[0]
+    rc = process.poll()
+    return rc
 
-        pprint(jffop['format']) # gen info
-        for stream in range(len(jffop['streams'])):
-            if jffop['streams'][stream]['codec_type'] == 'video':
-                pprint(jffop['streams'][stream]['codec_name']) # video codec name
-                pprint(jffop['streams'][stream]['coded_width']) # video width
-            if jffop['streams'][stream]['codec_type'] == 'audio':
-                pprint(jffop['streams'][stream]['codec_name']) # audio codec name
+def video_info(media_file):
+    j, rc = ffprobe_json(media_file)
+    for stream in range(len(j['streams'])):
+        if j['streams'][stream]['codec_type'] == 'video':
+            v_codec = j['streams'][stream]['codec_name'] # video codec name
+            v_width = j['streams'][stream]['coded_width'] # video width
+            v_height = j['streams'][stream]['coded_height'] # video height
+    return{'v_codec': v_codec, 'v_width': v_width, 'v_height': v_height}
+
+
+def audio_info(media_file):
+    j, rc = ffprobe_json(media_file)
+    for stream in range(len(j['streams'])):
+        if j['streams'][stream]['codec_type'] == 'audio':
+            a_codec = j['streams'][stream]['codec_name'] # audio codec name
+            if j['streams'][stream]['sample_rate']: #aac
+                a_sample_rate = j['streams'][stream]['sample_rate'] # sample rate Hz
+            elif j['streams'][stream]['bit_rate']: #ac3
+                a_sample_rate = j['streams'][stream]['bit_rate'] # sample rate Hz
+            a_channels = j['streams'][stream]['channels'] # number of channels
+    return{'a_codec': a_codec, 'a_sample_rate': a_sample_rate, 'a_channels': a_channels}
+
+
+def format_info(media_file):
+    j, rc = ffprobe_json(media_file)
+    f_name = j['format']['filename'] # full path with filename
+    f_format = j['format']['format_name'] # format/contatiner
+    f_duration = j['format']['duration'] # duration (in sec)
+    f_size = j['format']['size'] # size info (in bytes)
+    f_bitrate = j['format']['bit_rate'] # bit rate info (seems inaccurate)
+    return{'name': f_name, 'format': f_format, 'duration': f_duration, 'size': f_size, 'bitrate': f_bitrate}
+
+def main():
+    media_file = ' '.join(sys.argv[1:])
+    if os.path.isfile(media_file):
+        v = video_info(media_file)
+        a = audio_info(media_file)
+        f = format_info(media_file)
+        for k, s in v.items():
+            print(k,s)
+        for k, s in a.items():
+            print(k,s)
+        for k, s in f.items():
+            print(k,s)
+
+    #    ff_conv_container(media_file)
+
+    else:
+        return None
+
 
 if __name__ == "__main__":
     main()
