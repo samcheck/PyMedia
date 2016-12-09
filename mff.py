@@ -3,7 +3,6 @@ import json
 import subprocess
 import sys, os
 import shlex
-from pprint import pprint
 
 
 def ffprobe_json(media_file):
@@ -19,7 +18,18 @@ def ffprobe_json(media_file):
 def ff_conv_container(media_file):
     new_name = os.path.splitext(media_file)[0]
     #-movflags +faststart (to play partial files where end is not finished)
-    ff = 'ffmpeg -i "{}" -vcodec copy -acodec copy "{}".mp4'.format(media_file, new_name)
+    j, rc = ffprobe_json(media_file)
+    for stream in range(len(j['streams'])):
+        if j['streams'][stream]['codec_type'] == 'video':
+            v_codec = j['streams'][stream]['codec_name'] # video codec name
+        if j['streams'][stream]['codec_type'] == 'audio':
+            a_codec = j['streams'][stream]['codec_name'] # audio codec name
+            
+    if v_codec == 'h264' and (a_codec == 'aac' or 'mp3'):
+        codecs = '-vcodec copy -acodec copy'
+    else:
+        codecs = '-c:v libx264 -c:a aac'
+    ff = ('ffmpeg -i "{}" {} "{}".mp4').format(media_file, codecs, new_name)
     process = subprocess.Popen(shlex.split(ff), stdout=subprocess.PIPE)
     stdout = process.communicate()[0]
     rc = process.poll()
