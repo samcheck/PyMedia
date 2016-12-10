@@ -15,7 +15,7 @@ def ffprobe_json(media_file):
     return j_out, rc
 
 
-def ff_conv_container(media_file):
+def ff_to_mp4(media_file):
     new_name = os.path.splitext(media_file)[0]
     #-movflags +faststart (to play partial files where end is not finished)
     j, rc = ffprobe_json(media_file)
@@ -24,16 +24,21 @@ def ff_conv_container(media_file):
             v_codec = j['streams'][stream]['codec_name'] # video codec name
         if j['streams'][stream]['codec_type'] == 'audio':
             a_codec = j['streams'][stream]['codec_name'] # audio codec name
-            
-    if v_codec == 'h264' and (a_codec == 'aac' or 'mp3'):
-        codecs = '-vcodec copy -acodec copy'
+
+    if v_codec == 'h264' and a_codec == 'aac':
+        codecs = '-c:v copy -c:a copy'
+    elif a_codec == 'aac':
+        codecs = '-c:v libx264 -c:a copy'
+    elif v_codec == 'h264':
+        codecs = '-c:v copy -c:a aac' # could use non-free (-c:a libfdk_aac)
     else:
-        codecs = '-c:v libx264 -c:a aac'
+        codecs = '-c:v libx264 -c:a aac' # could use non-free (-c:a libfdk_aac)
     ff = ('ffmpeg -i "{}" {} "{}".mp4').format(media_file, codecs, new_name)
     process = subprocess.Popen(shlex.split(ff), stdout=subprocess.PIPE)
     stdout = process.communicate()[0]
     rc = process.poll()
     return rc
+
 
 def video_info(media_file):
     j, rc = ffprobe_json(media_file)
@@ -79,9 +84,6 @@ def main():
             print(k,s)
         for k, s in f.items():
             print(k,s)
-
-    #    ff_conv_container(media_file)
-
     else:
         return None
 
