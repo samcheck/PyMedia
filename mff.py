@@ -3,6 +3,7 @@ import json
 import subprocess
 import sys, os
 import shlex
+import logging
 
 
 def ffprobe_json(media_file):
@@ -26,12 +27,16 @@ def ff_to_mp4(media_file):
             a_codec = j['streams'][stream]['codec_name'] # audio codec name
 
     if v_codec == 'h264' and a_codec == 'aac':
+        logger.info('Copying audio and video streams directly.')
         codecs = '-c:v copy -c:a copy'
     elif a_codec == 'aac':
+        logger.info('Converting video stream.')
         codecs = '-c:v libx264 -c:a copy'
     elif v_codec == 'h264':
+        logger.info('Converting audio stream.')
         codecs = '-c:v copy -c:a aac' # could use non-free (-c:a libfdk_aac)
     else:
+        logger.info('Converting both audio and video streams.')
         codecs = '-c:v libx264 -c:a aac' # could use non-free (-c:a libfdk_aac)
     ff = ('ffmpeg -i "{}" {} "{}".mp4').format(media_file, codecs, new_name)
     process = subprocess.Popen(shlex.split(ff), stdout=subprocess.PIPE)
@@ -73,6 +78,9 @@ def format_info(media_file):
     return{'name': f_name, 'format': f_format, 'duration': f_duration, 'size': f_size, 'bitrate': f_bitrate}
 
 def main():
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(filename='mff.log',level=logging.DEBUG,
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     media_file = ' '.join(sys.argv[1:])
     if os.path.isfile(media_file):
         v = video_info(media_file)
@@ -84,6 +92,7 @@ def main():
             print(k,s)
         for k, s in f.items():
             print(k,s)
+        ff_to_mp4(media_file)
     else:
         return None
 
