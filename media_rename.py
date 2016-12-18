@@ -24,7 +24,9 @@ def rename(item, JWT=None):
         med_info = scrapeTVDB.theTVDB(reg_dict['title'], reg_dict['season'],
                                     reg_dict['episode'], JWT)
 
-        new_name = (reg_dict['title'] + ' S' + reg_dict['season'].zfill(2) +
+        series_info = scrapeTVDB.series_search(reg_dict['title'], JWT)
+
+        new_name = (series_info['data'][0]['seriesName'] + ' S' + reg_dict['season'].zfill(2) +
                         'E' + reg_dict['episode'].zfill(2) + ' - ' +
                         med_info['data'][0]['episodeName'] + ext)
 
