@@ -38,7 +38,7 @@ def Split(media_item):
 
     # Make TV regex, 2 groups [all chars before Season/Ep] and [Season/Ep]
     # Optionally 1 or 2 numbers for season/episode
-    tv_regex = re.compile(r'(.*)([Ss]\d?\d[Ee]\d?\d)')
+    tv_regex = re.compile(r'(.*)(([Ss]\d?\d[Ee]\d?\d)|(\d?\d[Xx]\d?\d))')
 
     # Make movie regex, 2 groups [all chars before (year)] and [(year)]
     # seem to need to optionally match an additional backslash in the regex
@@ -65,8 +65,16 @@ def Split(media_item):
         logger.info('Matched TV format')
         # Clean title and split season and episode
         title = media_match.group(1).replace('\\', '').replace('.', ' ').replace('-', ' ').strip().title()
-        season = media_match.group(2).upper().split('E')[0].replace('S','')
-        episode = media_match.group(2).upper().split('E')[1]
+        if len(media_match.group(2).upper().split('E')) == 2:
+            season = media_match.group(2).upper().split('E')[0].replace('S','')
+            episode = media_match.group(2).upper().split('E')[1]
+        elif len(media_match.group(2).upper().split('X')) == 2:
+            season = media_match.group(2).upper().split('X')[0]
+            episode = media_match.group(2).upper().split('X')[1]
+        else:
+            logger.warning('Error splitting season and episode')
+            return{'type': None}
+
         logger.info('TV: %s S%sE%s' % (title, season, episode))
 
         # Return a dict w/ 'title', 'season' (TV), 'episode' (TV), type ('tv' or 'movie')
