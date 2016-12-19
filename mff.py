@@ -27,18 +27,22 @@ def ff_to_mp4(media_file):
             a_codec = j['streams'][stream]['codec_name'] # audio codec name
 
     if v_codec == 'h264' and a_codec == 'aac':
-        logger.info('Copying audio and video streams directly.')
-        codecs = '-c:v copy -c:a copy'
+        logger.info('Copying video streams directly.')
+        v_codec = 'copy'
+        a_codec = 'copy'
     elif a_codec == 'aac':
         logger.info('Converting video stream.')
-        codecs = '-c:v libx264 -c:a copy'
+        v_codec = 'libx264'
+        a_codec = 'copy'
     elif v_codec == 'h264':
         logger.info('Converting audio stream.')
-        codecs = '-c:v copy -c:a aac' # could use non-free (-c:a libfdk_aac)
+        v_codec = 'copy'
+        a_codec = 'aac' # could use non-free (-c:a libfdk_aac)
     else:
         logger.info('Converting both audio and video streams.')
-        codecs = '-c:v libx264 -c:a aac' # could use non-free (-c:a libfdk_aac)
-    ff = ('ffmpeg -i "{}" {} "{}".mp4').format(media_file, codecs, new_name)
+        v_codec = 'libx264'
+        a_codec = 'aac' # could use non-free (-c:a libfdk_aac)
+    ff = ('ffmpeg -i "{}" -c:v {} -c:a {} "{}".mp4').format(media_file, v_codec, a_codec, new_name)
     process = subprocess.Popen(shlex.split(ff), stdout=subprocess.PIPE)
     stdout = process.communicate()[0]
     rc = process.poll()
