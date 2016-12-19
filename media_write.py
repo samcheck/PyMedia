@@ -5,10 +5,8 @@ from FlaskMedia import db
 from FlaskMedia.models import Movie, Series, Episode
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(filename='media_write.log',level=logging.DEBUG,
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-
 
 def write_movie(title, plot, year, released, last_updated_utc, rated, runtime,
                 IMDB_id, IMDB_rating, IMDB_rating_count, metascore, awards,
