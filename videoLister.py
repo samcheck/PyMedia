@@ -9,7 +9,7 @@ VIDEO_EXT = ('.webm', '.mkv', '.flv', '.avi', '.mov', '.qt', '.wmv', '.mp4',
              '.m4v', '.mpg', '.mpeg')
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(filename='videoLister.log',level=logging.DEBUG,
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 def videoDir(path_to_videos):
