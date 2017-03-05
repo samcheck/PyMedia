@@ -13,8 +13,9 @@ import videoLister
 def main():
     # set up logging
     logger = logging.getLogger(__name__)
-    logging.basicConfig(filename='whats_on_tv.log', level=logging.DEBUG,
+    logging.basicConfig(filename='whats_on_tv.log', filemode='w', level=logging.DEBUG,
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
 
     # set up argparse
     parser = argparse.ArgumentParser()
@@ -29,11 +30,14 @@ def main():
     mList = []
 
     for item in videoLister.videoDir(in_path):
-        logging.info("Found: %s." % item)
+        logger.info("Found: {}.".format(item))
         mList.append(item)
 
-    print(random.choice(mList))
+    choice = random.choice(mList)
+    logger.info("Playing: {}".format(os.path.basename(choice)))
 
+    command = 'mpv "{}" --really-quiet &'.format(choice)
+    os.system(command)
 
 if __name__ == '__main__':
     main()
