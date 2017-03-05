@@ -8,10 +8,6 @@ import logging
 VIDEO_EXT = ('.webm', '.mkv', '.flv', '.avi', '.mov', '.qt', '.wmv', '.mp4',
              '.m4v', '.mpg', '.mpeg')
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
 def videoDir(path_to_videos):
     """Searches directory and generates a list of matching filenames.
 
@@ -25,6 +21,10 @@ def videoDir(path_to_videos):
     Raises:
         Exception: Not a valid directory, please input a directory to search.
     """
+
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     if os.path.exists(path_to_videos) and os.path.isdir(path_to_videos):
         for root, dirs, files in os.walk(path_to_videos):
