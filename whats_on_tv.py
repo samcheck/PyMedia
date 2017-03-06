@@ -40,8 +40,8 @@ def main():
     logger.info("Playing: {}".format(os.path.basename(choice)))
 
     # Launch selected video with MPV in full screen
-    command = 'mpv "{}" --really-quiet --fs &'.format(choice)
-    proc = subprocess.Popen(shlex.split(command))
+    play_command = 'mpv "{}" --really-quiet --fs &'.format(choice)
+    proc = subprocess.Popen(shlex.split(play_command))
     # use proc.terminate() to kill
 
 
