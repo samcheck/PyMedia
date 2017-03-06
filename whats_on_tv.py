@@ -21,7 +21,7 @@ def main():
 
     # set up argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--input', help='Input directory to clone.')
+    parser.add_argument('-i', '--input', help='Input directory to search.')
     args = parser.parse_args()
     if args.input:
         in_path = args.input
