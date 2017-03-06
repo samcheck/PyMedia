@@ -1,3 +1,5 @@
+#!venv/bin/python3
+# mff.py - Wrapper for ffprobe and ffmpeg commands
 
 import json
 import subprocess
@@ -7,8 +9,17 @@ import logging
 
 
 def ffprobe_json(media_file):
-    ffcom = 'ffprobe -v quiet -print_format json -show_format -show_streams'
-    ff = (ffcom + " '" + media_file + "'")
+    """Uses ffprobe to extract media information returning json format.
+
+    Arguments:
+        media_file: media file to be probed.
+
+    Returns:
+        json output of media information.
+        return code indicating process result.
+
+    """
+    ff = 'ffprobe -v quiet -print_format json -show_format -show_streams "{}"'.format(media_file)
     process = subprocess.Popen(shlex.split(ff), stdout=subprocess.PIPE)
     stdout = process.communicate()[0]
     rc = process.poll()
@@ -17,7 +28,21 @@ def ffprobe_json(media_file):
 
 
 def ff_to_mp4(media_file):
-    new_name = os.path.splitext(media_file)[0]
+    """Converts a media file to h264/aac in an mp4 container.
+
+    Arguments:
+        media_file: media file to be converted.
+
+    Returns:
+        return code indicating process result.
+        writes out a new media file in same directory with .mp4 extension.
+
+    """
+
+    logger = logging.getLogger('ff_to_mp4')
+    logger.info('Converting {}'.format(os.path.splitext(media_file)[0]))
+
+    new_name = (os.path.splitext(media_file)[0] + '_converted')
     #-movflags +faststart (to play partial files where end is not finished)
     j, rc = ffprobe_json(media_file)
     for stream in range(len(j['streams'])):
@@ -50,6 +75,18 @@ def ff_to_mp4(media_file):
 
 
 def video_info(media_file):
+    """Uses ffprobe to extract video stream information.
+
+    Arguments:
+        media_file: media file to be probed.
+
+    Returns:
+        dictionary of strings containing:
+            v_codec = video codec used (h264, x265, etc.)
+            v_width = video width in pixels
+            v_height = video height in pixels
+
+    """
     j, rc = ffprobe_json(media_file)
     for stream in range(len(j['streams'])):
         if j['streams'][stream]['codec_type'] == 'video':
@@ -60,6 +97,18 @@ def video_info(media_file):
 
 
 def audio_info(media_file):
+    """Uses ffprobe to extract audio stream information.
+
+    Arguments:
+        media_file: media file to be probed.
+
+    Returns:
+        dictionary of strings containing:
+            a_codec = audio codec used (aac, ac3, etc.)
+            a_sample_rate = sample rate in Hertz
+            a_channels = number of audio channels
+
+    """
     j, rc = ffprobe_json(media_file)
     for stream in range(len(j['streams'])):
         if j['streams'][stream]['codec_type'] == 'audio':
@@ -73,9 +122,23 @@ def audio_info(media_file):
 
 
 def format_info(media_file):
+    """Uses ffprobe to extract file information.
+
+    Arguments:
+        media_file: media file to be probed.
+
+    Returns:
+        dictionary of strings containing:
+            name = full path with filename
+            format = container type
+            duration = duration in seconds
+            size = file size in bytes
+            bitrate = overall bitrate in bits per second
+
+    """
     j, rc = ffprobe_json(media_file)
     f_name = j['format']['filename'] # full path with filename
-    f_format = j['format']['format_name'] # format/contatiner
+    f_format = j['format']['format_name'] # format/container
     f_duration = j['format']['duration'] # duration (in sec)
     f_size = j['format']['size'] # size info (in bytes)
     f_bitrate = j['format']['bit_rate'] # bit rate info (seems inaccurate)
