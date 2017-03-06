@@ -171,7 +171,7 @@ def main():
             print(k,s)
         for k, s in f.items():
             print(k,s)
-        if args.c:
+        if args.convert:
             ff_to_mp4(media_file)
     else:
         return None
