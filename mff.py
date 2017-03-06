@@ -3,9 +3,11 @@
 
 import json
 import subprocess
-import sys, os
+import sys
+import os
 import shlex
 import logging
+import argparse
 
 
 def ffprobe_json(media_file):
@@ -52,7 +54,7 @@ def ff_to_mp4(media_file):
             a_codec = j['streams'][stream]['codec_name'] # audio codec name
 
     if v_codec == 'h264' and a_codec == 'aac':
-        logger.info('Copying video streams directly.')
+        logger.info('Copying media streams directly.')
         v_codec = 'copy'
         a_codec = 'copy'
     elif a_codec == 'aac':
@@ -148,7 +150,17 @@ def main():
     logger = logging.getLogger(__name__)
     logging.basicConfig(filename='mff.log',level=logging.DEBUG,
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    media_file = ' '.join(sys.argv[1:])
+    # set up argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--input', help='Input file.')
+    parser.add_argument('-c', '--convert', action='store_true', help='Convert the file to h264/aac in mp4 container.')
+    args = parser.parse_args()
+    if args.input:
+        media_file = args.input
+    else:
+        parser.print_help()
+        sys.exit(1)
+
     if os.path.isfile(media_file):
         v = video_info(media_file)
         a = audio_info(media_file)
@@ -159,7 +171,8 @@ def main():
             print(k,s)
         for k, s in f.items():
             print(k,s)
-        ff_to_mp4(media_file)
+        if args.c:
+            ff_to_mp4(media_file)
     else:
         return None
 
