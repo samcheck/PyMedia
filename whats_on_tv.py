@@ -7,6 +7,8 @@ import os
 import logging
 import argparse
 import random
+import subprocess
+import shlex
 
 import videoLister
 
@@ -27,17 +29,21 @@ def main():
         parser.print_help()
         sys.exit(1)
 
+    # One time loop to generate a list of available media files in path
     mList = []
-
     for item in videoLister.videoDir(in_path):
         logger.info("Found: {}".format(item))
         mList.append(item)
 
+    # Randomly select a video to play
     choice = random.choice(mList)
     logger.info("Playing: {}".format(os.path.basename(choice)))
 
+    # Launch selected video with MPV in full screen
     command = 'mpv "{}" --really-quiet --fs &'.format(choice)
-    os.system(command)
+    proc = subprocess.Popen(shlex.split(command))
+    # use proc.terminate() to kill
+
 
 if __name__ == '__main__':
     main()
