@@ -146,10 +146,12 @@ def format_info(media_file):
     f_bitrate = j['format']['bit_rate'] # bit rate info (seems inaccurate)
     return{'name': f_name, 'format': f_format, 'duration': f_duration, 'size': f_size, 'bitrate': f_bitrate}
 
+
 def main():
     logger = logging.getLogger(__name__)
     logging.basicConfig(filename='mff.log',level=logging.DEBUG,
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
     # set up argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--input', help='Input file.')
@@ -161,18 +163,18 @@ def main():
         parser.print_help()
         sys.exit(1)
 
+    # Check if input is a file and if the convert flag is passed
     if os.path.isfile(media_file):
         v = video_info(media_file)
         a = audio_info(media_file)
         f = format_info(media_file)
-        for k, s in v.items():
-            print(k,s)
-        for k, s in a.items():
-            print(k,s)
-        for k, s in f.items():
-            print(k,s)
+        for d in [v, a, f]:
+            for k, s in d.items():
+                print(k,s)
+
         if args.convert:
             ff_to_mp4(media_file)
+
     else:
         return None
 
