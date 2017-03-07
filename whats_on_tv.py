@@ -34,7 +34,7 @@ def main():
     # One time loop to generate a list of available media files in path
     m_list = []
     for item in videoLister.videoDir(in_path):
-        #logger.info("Found: {}".format(item)) # Can write really long log files
+        logger.debug("Found: {}".format(item)) # Can write really long log files
         m_list.append(item)
 
     # Randomly select a video to play
