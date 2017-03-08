@@ -22,8 +22,9 @@ def main():
 
     # set up argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--input', help='Input directory to search.')
-    parser.add_argument('-t', '--time', help='Viewing time in minutes')
+    parser.add_argument('input', help='Input directory to search.')
+    # Set up range of choices starting at 15 min in 15 min increments up to 300 min
+    parser.add_argument('-t', '--time', help='Viewing time in minutes', type=int, choices=range(15,301)[::15])
     args = parser.parse_args()
     if args.input:
         in_path = args.input
@@ -40,8 +41,8 @@ def main():
     # Randomly select a video to play
 
     if args.time: # Find a file with a duration shorter than allotted time
-        duration = 999
-        while duration > int(args.time):
+        duration = 999 # Fix this, its hacky to get the loop to run...
+        while duration > args.time:
             choice = random.choice(m_list)
             m_list.remove(choice) # remove the choice from the list
             m_file = mff.format_info(choice) # get file details
