@@ -1,6 +1,5 @@
 #!venv/bin/python3
-# media_namer.py - Renames passed media files in a folder (and subfolders) using
-#                   OMDB for movies and theTVDB for TV shows
+# whats_on_tv.py - randomly selects media files to play from input directory
 
 import sys
 import os
@@ -18,7 +17,6 @@ def main():
     logger = logging.getLogger(__name__)
     logging.basicConfig(filename='whats_on_tv.log', filemode='w', level=logging.INFO,
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
 
     # set up argparse
     parser = argparse.ArgumentParser()
@@ -40,6 +38,7 @@ def main():
         m_list.append(item)
 
     # Randomly select a video to play
+    random.seed()
     p_list = []
     for x in range(args.num):
         duration = 999 # Fix this, its hacky to get the loop to run...
