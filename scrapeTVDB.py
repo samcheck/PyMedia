@@ -17,6 +17,15 @@ logging.basicConfig(filename='scrapeTVDB.log',level=logging.DEBUG,
 
 
 def auth():
+    """Authentication function for TheTVDB access.
+
+    Arguments:
+        None, but requires apikey to import
+
+    Returns:
+        Java Web Token for authentication as a string
+
+    """
     AUTH = {"apikey": TVDB_apikey}
     headers = {'content-type': 'application/json'}
     login_url = URL_BASE + '/login'
@@ -30,6 +39,19 @@ def auth():
 
 
 def theTVDB(tvTitle, tvSeason, tvEpisode, JWT=None):
+    """General purpose TV episode data search of TheTVDB.
+
+    Arguments:
+        tvTitle: TV series title to search.
+        tvSeason: Season number to search.
+        tvEpisode: Episode number to search.
+        JWT: Java Web Token for authentication as a string, if None, will run
+             authentication function.
+
+    Returns:
+        JSON style dictionary of episode details from the TVDB.
+
+    """
     if not JWT:
         JWT = auth()
     headers = {'content-type': 'application/json',
@@ -55,6 +77,17 @@ def theTVDB(tvTitle, tvSeason, tvEpisode, JWT=None):
 
 
 def episode_id(TVDB_id, JWT=None):
+    """TV episode data search of TheTVDB by TheTVDB episode id.
+
+    Arguments:
+        TVDB_id: TheTVDB episode id to search.
+        JWT: Java Web Token for authentication as a string, if None, will run
+             authentication function.
+
+    Returns:
+        JSON style dictionary of episode details from the TVDB.
+
+    """
     if not JWT:
         JWT = auth()
     headers = {'content-type': 'application/json',
@@ -70,6 +103,17 @@ def episode_id(TVDB_id, JWT=None):
 
 
 def series_search(TV_title, JWT=None):
+    """TV series data search of TheTVDB by series title.
+
+    Arguments:
+        TV_title: TV series title to search.
+        JWT: Java Web Token for authentication as a string, if None, will run
+             authentication function.
+
+    Returns:
+        JSON style dictionary of series details from the TVDB.
+
+    """
     if not JWT:
         JWT = auth()
     headers = {'content-type': 'application/json',
@@ -87,6 +131,17 @@ def series_search(TV_title, JWT=None):
 
 
 def series_id(TVDB_id, JWT=None):
+    """TV series data search of TheTVDB by TheTVDB series id.
+
+    Arguments:
+        TVDB_id: TheTVDB episode id to search.
+        JWT: Java Web Token for authentication as a string, if None, will run
+             authentication function.
+
+    Returns:
+        JSON style dictionary of episode details from the TVDB.
+
+    """
     if not JWT:
         JWT = auth()
     headers = {'content-type': 'application/json',
@@ -102,6 +157,17 @@ def series_id(TVDB_id, JWT=None):
 
 
 def series_actors(TVDB_id, JWT=None):
+    """Actors in specific TV series data search of TheTVDB by TheTVDB series id.
+
+    Arguments:
+        TVDB_id: TheTVDB series id to search.
+        JWT: Java Web Token for authentication as a string, if None, will run
+             authentication function.
+
+    Returns:
+        JSON style dictionary of actors details from the TVDB.
+
+    """
     if not JWT:
         JWT = auth()
     headers = {'content-type': 'application/json',
