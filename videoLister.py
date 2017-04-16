@@ -30,11 +30,13 @@ def videoDir(path_to_videos):
         for root, dirs, files in os.walk(path_to_videos):
             for filename in files:
                 if filename.endswith(VIDEO_EXT):
+                    logger.debug('Found: {}'.format(os.path.join(root, filename)))
                     yield os.path.join(root, filename)
 
     elif os.path.exists(path_to_videos) and os.path.isfile(path_to_videos):
         if path_to_videos.endswith(VIDEO_EXT):
+            logger.debug('Found: {}'.format(path_to_videos))
             yield path_to_videos
 
-    elif not (os.path.exists(path_to_videos) and (os.path.isdir(path_to_videos) or os.path.isfile(path_to_videos))):
-        logger.warning('%s is not a valid directory or file.' % path_to_videos)
+    else:
+        logger.warning('{} is not a valid directory or file.'.format(path_to_videos))
