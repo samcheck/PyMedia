@@ -8,7 +8,7 @@ import logging
 VIDEO_EXT = ('.webm', '.mkv', '.flv', '.avi', '.mov', '.qt', '.wmv', '.mp4',
              '.m4v', '.mpg', '.mpeg')
 
-def videoDir(path_to_videos):
+def videoDir(path_to_videos, search=""):
     """Searches directory and generates a list of matching filenames.
 
     Argument:
@@ -29,14 +29,14 @@ def videoDir(path_to_videos):
     if os.path.exists(path_to_videos) and os.path.isdir(path_to_videos):
         for root, dirs, files in os.walk(path_to_videos):
             for filename in files:
-                if filename.endswith(VIDEO_EXT):
+                if filename.endswith(VIDEO_EXT) and search.lower() in filename.lower():
                     logger.debug('Found: {}'.format(os.path.join(root, filename)))
-                    yield os.path.join(root, filename)
+                    yield os.path.abspath(os.path.join(root, filename))
 
     elif os.path.exists(path_to_videos) and os.path.isfile(path_to_videos):
-        if path_to_videos.endswith(VIDEO_EXT):
+        if path_to_videos.endswith(VIDEO_EXT) and search.lower() in filename.lower():
             logger.debug('Found: {}'.format(path_to_videos))
-            yield path_to_videos
+            yield os.path.abspath(path_to_videos)
 
     else:
         logger.warning('{} is not a valid directory or file.'.format(path_to_videos))
