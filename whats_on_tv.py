@@ -24,6 +24,7 @@ def main():
     # Set up range of choices starting at 15 min in 15 min increments up to 300 min
     parser.add_argument('-t', '--time', help='Viewing time in minutes', type=int, choices=range(15,301)[::15], default=300)
     parser.add_argument('-n', '--num', help='Number of videos to queue', type=int, default=1)
+    parser.add_argument('-s', '--search', help='String to search for', type=str, default="")
     args = parser.parse_args()
     if args.input:
         in_path = args.input
@@ -33,9 +34,14 @@ def main():
 
     # One time loop to generate a list of available media files in path
     m_list = []
-    for item in videoLister.videoDir(in_path):
+    for item in videoLister.videoDir(in_path, args.search):
         logger.debug("Found: {}".format(item)) # Can write really long log files
         m_list.append(item)
+
+    # Check that we matched at least args.num
+    if len(m_list) == 0:
+        print("Search term not found, exiting...")
+        raise SystemExit
 
     # Randomly select a video to play
     random.seed()
