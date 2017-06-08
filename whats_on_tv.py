@@ -42,6 +42,9 @@ def main():
     if len(m_list) == 0:
         print("Search term not found, exiting...")
         raise SystemExit
+    elif len(m_list) < args.num:
+        print("Number of matches found: {}, fewer than number to queue, exiting...".format(len(m_list)))
+        raise SystemExit
 
     # Randomly select a video to play
     random.seed()
