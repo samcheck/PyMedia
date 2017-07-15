@@ -139,13 +139,22 @@ def format_info(media_file):
 
     """
     j, rc = ffprobe_json(media_file)
-    f_name = j['format']['filename'] # full path with filename
-    f_format = j['format']['format_name'] # format/container
+    try:
+        f_name = j['format']['filename'] # full path with filename
+    except KeyError:
+        f_name = "Null"
+    try:
+        f_format = j['format']['format_name'] # format/container
+    except KeyError:
+        f_format = "Null"
     try:
         f_duration = j['format']['duration'] # duration (in sec)
     except KeyError:
         f_duration = 0
-    f_size = j['format']['size'] # size info (in bytes)
+    try:
+        f_size = j['format']['size'] # size info (in bytes)
+    except KeyError:
+        f_size = 0
     try:
         f_bitrate = j['format']['bit_rate'] # bit rate info (seems inaccurate)
     except KeyError:
