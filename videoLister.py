@@ -34,7 +34,7 @@ def videoDir(path_to_videos, search=""):
                     yield os.path.abspath(os.path.join(root, filename))
 
     elif os.path.exists(path_to_videos) and os.path.isfile(path_to_videos):
-        if path_to_videos.endswith(VIDEO_EXT) and search.lower() in filename.lower():
+        if path_to_videos.endswith(VIDEO_EXT) and search.lower() in path_to_videos.lower():
             logger.debug('Found: {}'.format(path_to_videos))
             yield os.path.abspath(path_to_videos)
 
