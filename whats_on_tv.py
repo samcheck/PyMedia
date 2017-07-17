@@ -8,6 +8,7 @@ import argparse
 import random
 import subprocess
 import shlex
+import re
 
 import videoLister
 import mff
@@ -21,8 +22,19 @@ def main():
     # set up argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('input', help='Input directory to search.')
-    # Set up range of choices starting at 15 min in 15 min increments up to 300 min
-    parser.add_argument('-t', '--time', help='Viewing time in minutes', type=int, choices=range(15,301)[::15], default=300)
+
+    # Set up custom parser for viewing time range.
+    def parseNumList(string):
+        """
+        https://stackoverflow.com/questions/6512280/accept-a-range-of-numbers-in-the-form-of-0-5-using-pythons-argparse
+        """
+        m = re.match(r'(\d+)(?:-(\d+))?$', string)
+        start = m.group(1)
+        end = m.group(2) or start
+        logger.debug("List of values: {}".format(list(range(int(start), int(end)+1))))
+        return list(range(int(start), int(end)+1))
+
+    parser.add_argument('-t', '--time', help='Viewing time in minutes', type=parseNumList, default=[300])
     parser.add_argument('-n', '--num', help='Number of videos to queue', type=int, default=1)
     parser.add_argument('-s', '--search', help='String to search for', type=str, default="")
     args = parser.parse_args()
@@ -46,12 +58,20 @@ def main():
         print("Number of matches found: {}, fewer than number to queue, exiting...".format(len(m_list)))
         raise SystemExit
 
+    # set min/max durations
+    if len(args.time) >= 2:
+        duration_max = args.time[-1]
+        duration_min = args.time[0]
+    else:
+        duration_max = args.time[0]
+        duration_min = 0
+
     # Randomly select a video to play
     random.seed()
     p_list = []
     for x in range(args.num):
         duration = 999 # Fix this, its hacky to get the loop to run...
-        while duration > args.time: # Find a file with a duration shorter than allotted time
+        while duration not in range(duration_min, duration_max): # Find a file with a duration shorter than allotted time
             choice = random.choice(m_list)
             m_list.remove(choice) # remove the choice from the list
             m_file = mff.format_info(choice) # get file details
