@@ -4,9 +4,16 @@
 # api documentation: https://api.thetvdb.com/swagger
 
 import logging
+import sys
 
 import requests
-from apikeys import TVDB_apikey
+
+try:
+    from apikeys import TVDB_apikey
+except ImportError:
+    raise ImportError('<TVDB API key not found, exiting.>')
+    sys.exit(1)
+
 
 URL_BASE = 'https://api.thetvdb.com'
 
