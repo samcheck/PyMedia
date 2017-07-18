@@ -52,7 +52,7 @@ def main():
             int(out['minutes']), int(out['seconds'])))
 
     else:
-        print(time)
+        print('{} seconds.'.format(time))
 
 if __name__ == "__main__":
     main()
