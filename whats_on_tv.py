@@ -31,8 +31,11 @@ def main():
         m = re.match(r'(\d+)(?:-(\d+))?$', string)
         start = m.group(1)
         end = m.group(2) or start
-        logger.debug("List of values: {}".format(list(range(int(start), int(end)+1))))
-        return list(range(int(start), int(end)+1))
+        logger.debug("List of values: {}".format([int(start), int(end)]))
+        if start == end:
+            return [int(start)]
+        else:
+            return [int(start), int(end)]
 
     parser.add_argument('-t', '--time', help='Viewing time in minutes', type=parseNumList, default=[300])
     parser.add_argument('-n', '--num', help='Number of videos to queue', type=int, default=1)
@@ -70,8 +73,8 @@ def main():
     random.seed()
     p_list = []
     for x in range(args.num):
-        duration = 999 # Fix this, its hacky to get the loop to run...
-        while duration not in range(duration_min, duration_max): # Find a file with a duration shorter than allotted time
+        duration = duration_max + 1 # Fix this, its hacky to get the loop to run...
+        while duration not in range(duration_min, duration_max): # Find a file with a duration in the allotted range.
             choice = random.choice(m_list)
             m_list.remove(choice) # remove the choice from the list
             m_file = mff.format_info(choice) # get file details
